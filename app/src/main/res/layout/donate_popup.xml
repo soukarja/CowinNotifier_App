@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:backgroundTint="@color/white"
+        android:layout_centerInParent="true"
+        android:minHeight="200dp"
+        app:cardCornerRadius="10dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:padding="20dp"
+            >
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/donateAnim"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/donate_animation"
+            android:layout_alignParentTop="true"
+            android:scaleType="centerCrop"
+            />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Spread a smile!"
+            android:textAlignment="center"
+            android:textColor="@color/darkgreen"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:id="@+id/donateHead1"
+            android:layout_below="@id/donateAnim"
+            />
+
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Booked a Vaccination slot? Share your contribution and encourage our developers to serve you even better!"
+            android:textAlignment="center"
+            android:textColor="@color/green"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:id="@+id/donateSub1"
+            android:layout_below="@id/donateHead1"/>
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_700"
+            android:text="DONATE NOW"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:textAlignment="center"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/donateSub1"
+            android:textAllCaps="true"
+            android:id="@+id/donateBtn"
+            />
+
+            <TextView
+                android:padding="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Maybe Later"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:id="@+id/maybeLaterDonateBtn"
+                android:layout_below="@id/donateBtn"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>

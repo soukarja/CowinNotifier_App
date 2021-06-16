@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/partBox"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12-12-2020"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        android:id="@+id/vaccineDate"
+        android:textSize="13sp"
+        />
+
+        <TextView
+            android:id="@+id/centerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Center Name"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_below="@id/vaccineDate" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="abc Road, Kolkata"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:id="@+id/centerAddress"
+            android:textSize="13sp"
+            android:layout_below="@id/centerName"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COVAXIN"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="2dp"
+            android:backgroundTint="@color/purple_700"
+            android:background="@drawable/roundedbutton"
+            android:id="@+id/VaccineName"
+            android:layout_marginRight="5dp"
+            android:textSize="13sp"
+            android:layout_below="@id/centerAddress"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18+"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="@color/teal_700"
+            android:background="@drawable/roundedbutton"
+            android:id="@+id/VaccineAge"
+            android:textSize="13sp"
+            android:layout_toRightOf="@id/VaccineName"
+            android:layout_below="@id/centerAddress"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paid"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="@color/primary3"
+            android:background="@drawable/roundedbutton"
+            android:id="@+id/VaccinePrice"
+            android:textSize="13sp"
+            android:layout_toRightOf="@id/VaccineAge"
+            android:layout_below="@id/centerAddress"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dose 1: 140"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="@color/darkgreen"
+            android:background="@drawable/roundedbutton"
+            android:id="@+id/VaccineDose1Btn"
+            android:textSize="13sp"
+            android:layout_below="@id/VaccineName"
+
+            android:gravity="center"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dose 2: 0"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="@color/darkgreen"
+            android:background="@drawable/roundedbutton"
+            android:id="@+id/VaccineDose2Btn"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:layout_below="@id/VaccineName"
+            android:layout_toRightOf="@id/VaccineDose1Btn"
+            />
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="SCHEDULE NOW"-->
+<!--            android:paddingTop="5dp"-->
+<!--            android:paddingBottom="5dp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:paddingLeft="30dp"-->
+<!--            android:paddingRight="30dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:layout_marginTop="2dp"-->
+<!--            android:layout_marginRight="5dp"-->
+<!--            android:layout_alignStart="@id/VaccineDose1Btn"-->
+<!--            android:layout_alignEnd="@id/VaccineDose2Btn"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:gravity="center"-->
+<!--            android:backgroundTint="@color/red"-->
+<!--            android:background="@drawable/roundedbutton"-->
+<!--            android:id="@+id/bookNowButton"-->
+<!--            android:layout_below="@id/centerAddress"-->
+<!--            android:textSize="13sp"-->
+<!--            android:layout_alignLeft="@id/VaccineDose1Btn"-->
+<!--            android:layout_alignRight="@id/VaccineDose2Btn"-->
+<!--            android:visibility="gone"/>-->
+
+
+
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/lightgrey"
+        android:text=""
+        android:layout_below="@id/partBox"
+        />
+
+
+
+</RelativeLayout>

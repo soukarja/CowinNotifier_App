@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Cowin Notifier</string>
+    <string name="searchBtnTxt">Search</string>
+    <string name="choose_district">Choose District</string>
+    <string name="choose_state">Choose State</string>
+    <string name="enter_pincode">Enter Pincode</string>
+    <string name="search_district">Search District</string>
+    <string name="search_pincode">Search Pincode</string>
+    <string name="channel_name">Cowin Notification</string>
+    <string name="close_drawer">CLOSE DRAWER</string>
+    <string name="open_drawer">OPEN DRAWER</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+<!--        <item-->
+<!--            android:id="@+id/homeBtn"-->
+<!--            android:title="Find Vaccine Slots"-->
+<!--            android:icon="@drawable/home_icon"/>-->
+
+        <item
+            android:id="@+id/rateUsOnPlaystore"
+            android:title="Rate us on Playstore"
+            android:icon="@drawable/star_icon" />
+
+        <item
+            android:id="@+id/shareBtn"
+            android:title="Share App with Friends"
+            android:icon="@drawable/share_icon" />
+
+        <item
+            android:id="@+id/abousUsBtn"
+            android:title="About Us"
+            android:icon="@drawable/info_icon" />
+
+        <item
+            android:id="@+id/donateBtn"
+            android:title="Donate"
+            android:icon="@drawable/money_icon" />
+
+    </group>
+
+
+</menu>

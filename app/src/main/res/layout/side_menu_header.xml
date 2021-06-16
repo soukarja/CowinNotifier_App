@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:minHeight="200dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/green">
+
+<!--    <ImageButton-->
+<!--        android:layout_width="70dp"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:src="@drawable/ic_launcher_foreground"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:layout_marginTop="20dp"/>-->
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        app:lottie_rawRes="@raw/vaccine_taking"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COWIN NOTIFIER for India"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Let's Fight the Pandemic Together!"
+        android:textColor="@color/lightgrey"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>
