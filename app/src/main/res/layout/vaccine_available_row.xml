@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:id="@+id/partBox"
@@ -41,6 +41,7 @@
             android:id="@+id/centerAddress"
             android:textSize="13sp"
             android:layout_below="@id/centerName"
+            android:paddingBottom="10dp"
             />
         <TextView
             android:layout_width="wrap_content"

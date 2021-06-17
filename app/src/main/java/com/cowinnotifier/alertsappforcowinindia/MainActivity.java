@@ -32,6 +32,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -50,6 +51,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,12 +67,21 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
 import com.facebook.ads.AdSettings;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.onesignal.OneSignal;
@@ -122,8 +133,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private long pressedTime;
     private boolean isPopupShowing = false;
     private AdView adView, adView2, adView3;
-    private String AdviewCode, Adview2Code, Adview3Code, intadCode;
+//    private String AdviewCode, Adview2Code, Adview3Code, intadCode;
     private InterstitialAd intad;
+
+    private String FBAdviewCode, FBAdview2Code, FBAdview3Code, FBintadCode;
+    private String GoogleBanner1AdCode, GoogleBanner2AdCode, GoogleBanner3AdCode, GoogleintadCode;
+
+    private com.google.android.gms.ads.interstitial.InterstitialAd mInterstitialAd;
+    public com.google.android.gms.ads.AdView adViewGoogle1, adViewGoogle2, adViewGoogle3;
+    private boolean showFacebookAds = false;
+
+
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -195,39 +215,94 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AudienceNetworkAds.initialize(this);
 
 //        AdviewCode = "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID"; //Sample Code
-        AdviewCode = "829049141062090_829050204395317"; //Sample Code
-        Adview2Code = "829049141062090_829050397728631"; //Sample Code
-        Adview3Code = "829049141062090_829050627728608"; //Sample Code
-        intadCode = "829049141062090_829049697728701"; //Sample Code
+//        AdviewCode = "829049141062090_829050204395317"; //Sample Code
+//        Adview2Code = "829049141062090_829050397728631"; //Sample Code
+//        Adview3Code = "829049141062090_829050627728608"; //Sample Code
+//        intadCode = "829049141062090_829049697728701"; //Sample Code
+        initializeAdCodes(false);
 //        AdSettings.addTestDevice("HASHED ID");
 //        AdSettings.setTestMode(true); // Test Mode
-        int cntt = 0;
-        LinearLayout bannerBox = (LinearLayout) findViewById(R.id.bannerAd1);
-        adView = new AdView(this, AdviewCode,AdSize.BANNER_HEIGHT_50);
-        adView.setId(cntt++);
-        bannerBox.addView(adView);
-        adView.loadAd();
+//        int cntt = 0;
+//        LinearLayout bannerBox = (LinearLayout) findViewById(R.id.bannerAd1);
+//        adView = new AdView(this, AdviewCode,AdSize.BANNER_HEIGHT_50);
+//        adView.setId(cntt++);
+//        bannerBox.addView(adView);
+//        adView.loadAd();
+//
+//        bannerBox = (LinearLayout) findViewById(R.id.bannerAd2);
+//        adView2 = new AdView(this, Adview2Code, AdSize.BANNER_HEIGHT_50);
+////        adView2 = new com.facebook.ads.AdView(this, Adview2Code, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+//        adView2.setId(cntt++);
+//        bannerBox.addView(adView2);
+//        adView2.loadAd();
+//
+//        bannerBox = (LinearLayout) findViewById(R.id.bannerAd3);
+//        adView3 = new AdView(this, Adview3Code, AdSize.BANNER_HEIGHT_50);
+////        adView3 = new com.facebook.ads.AdView(this, Adview3Code, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+//        adView3.setId(cntt++);
+//        bannerBox.addView(adView3);
+//        adView3.loadAd();
 
-        bannerBox = (LinearLayout) findViewById(R.id.bannerAd2);
-        adView2 = new AdView(this, Adview2Code, AdSize.BANNER_HEIGHT_50);
-//        adView2 = new com.facebook.ads.AdView(this, Adview2Code, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
-        adView2.setId(cntt++);
-        bannerBox.addView(adView2);
-        adView2.loadAd();
+        adView = createFacebookBanner(FBAdviewCode, (LinearLayout)findViewById(R.id.bannerAd1));
+        adViewGoogle1 = createGoogleBanner(GoogleBanner1AdCode, (LinearLayout)findViewById(R.id.bannerAd1));
 
-        bannerBox = (LinearLayout) findViewById(R.id.bannerAd3);
-        adView3 = new AdView(this, Adview3Code, AdSize.BANNER_HEIGHT_50);
-//        adView3 = new com.facebook.ads.AdView(this, Adview3Code, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
-        adView3.setId(cntt++);
-        bannerBox.addView(adView3);
-        adView3.loadAd();
+
+
+        adView2 = createFacebookBanner(FBAdview2Code, (LinearLayout)findViewById(R.id.bannerAd2));
+        adViewGoogle2 = createGoogleBanner(GoogleBanner2AdCode, (LinearLayout)findViewById(R.id.bannerAd2));
+
+        adView3 = createFacebookBanner(FBAdview3Code, (LinearLayout)findViewById(R.id.bannerAd3));
+        adViewGoogle3 = createGoogleBanner(GoogleBanner3AdCode, (LinearLayout)findViewById(R.id.bannerAd3));
+
+//        showFacebookBanner(adView, adViewGoogle1);
+        showFacebookBanner(adView);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (showFacebookAds){
+                    showFacebookBanner(adView2);
+//                    showFacebookBanner(adView2, adViewGoogle2);
+//                    showFacebookBanner(adView3, adViewGoogle3);
+                }
+                else{
+                    showGoogleBanner(adViewGoogle2);
+                    adView.destroy();
+                    showGoogleBanner(adViewGoogle1);
+//                    showGoogleBanner(adViewGoogle3);
+                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (showFacebookAds){
+//                            showFacebookBanner(adView2, adViewGoogle2);
+                            showFacebookBanner(adView3);
+//                            showFacebookBanner(adView3, adViewGoogle3);
+                        }
+                        else{
+//                            showGoogleBanner(adViewGoogle2);
+                            showGoogleBanner(adViewGoogle3);
+                        }
+                    }
+                }, 3*1000);
+            }
+        }, 3*1000);
+
+//        if (showFacebookAds){
+//            showFacebookBanner(adView2, adViewGoogle2);
+//            showFacebookBanner(adView3, adViewGoogle3);
+//        }
+//        else{
+//            showGoogleBanner(adViewGoogle2);
+//            showGoogleBanner(adViewGoogle3);
+//        }
+
 
 
 //        bad1.addView(adView);
 //        ll2.addView(bad1); //linearLayout
 //        adView.loadAd()
-//
-//        ;
+
 //        loadInterstitial();
 //        adView.loadAd();
 //        adView2.loadAd();
@@ -270,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         filterDose1 = sp.getBoolean("filterDose1", true);
         filterDose2 = sp.getBoolean("filterDose2", false);
 
-        shownToday = sp.getBoolean(getDate(), false);
+        shownToday = sp.getBoolean(getDate().replace("-", ""), false);
 
 
         setFilters();
@@ -514,6 +589,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         LinearLayout slotInfo = (LinearLayout) findViewById(R.id.slotInfo);
         slotInfo.setVisibility(View.GONE);
+
+
+        ScrollView sc = (ScrollView)findViewById(R.id.scrollViewMain);
+        ExtendedFloatingActionButton fab = (ExtendedFloatingActionButton) findViewById(R.id.scrollToTopButton);
+        fab.setVisibility(View.GONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            sc.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                    Log.d("scrollPosition", String.valueOf(scrollY));
+                    if (scrollY>=2000)
+                    {
+                        fab.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        fab.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                sc.scrollTo(0,0);
+                sc.smoothScrollTo(0,0);
+            }
+        });
 
     }
 
@@ -1097,6 +1200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             animationBox.setVisibility(View.GONE);
             slotInfo.setVisibility(View.VISIBLE);
 //            getStates();
+            loadBannerAds();
             return true;
         } else {
             animationBox.setVisibility(View.VISIBLE);
@@ -1203,96 +1307,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void loadInterstitial() {
-
-        // initializing InterstitialAd Object
-
-        // InterstitialAd Constructor Takes 2 Arguments
-
-        // 1)Context
-
-        // 2)Placement Id
-
-        intad = new InterstitialAd(this, intadCode);
-
-        // loading Ad
-        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
-
-            @Override
-
-            public void onInterstitialDisplayed(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onInterstitialDisplayed", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-
-            public void onInterstitialDismissed(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onInterstitialDismissed", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-
-            public void onError(Ad ad, AdError adError) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-
-            public void onAdLoaded(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onAdLoaded", Toast.LENGTH_SHORT).show();
-                intad.show();
-
-            }
-
-            @Override
-
-            public void onAdClicked(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onAdClicked", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-
-            public void onLoggingImpression(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onLoggingImpression", Toast.LENGTH_SHORT).show();
-
-            }
-
-        };
-
-
-//        intad.loadAd();
-        intad.loadAd(
-                intad.buildLoadAdConfig()
-                        .withAdListener(interstitialAdListener)
-                        .build());
-    }
 
     private void loadBannerAds() {
-        adView.loadAd();
-        adView2.loadAd();
-        adView3.loadAd();
+//        adView.loadAd();
+//        adView2.loadAd();
+//        adView3.loadAd();
+        if (showFacebookAds){
+//            showFacebookBanner(adView, adViewGoogle1);
+//            showFacebookBanner(adView2, adViewGoogle2);
+//            showFacebookBanner(adView3, adViewGoogle3);
+            showFacebookBanner(adView);
+            showFacebookBanner(adView2);
+            showFacebookBanner(adView3);
+        }
+        else {
+            showGoogleBanner(adViewGoogle1);
+            showGoogleBanner(adViewGoogle2);
+            showGoogleBanner(adViewGoogle3);
+        }
     }
 
 
@@ -1341,8 +1373,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
 
-
-        shownToday = sp.getBoolean(getDate(), false);
+        String shownTodayStr = "shownToday"+getDate().replace("-", "");
+        shownToday = sp.getBoolean(shownTodayStr, false);
         if (shownToday){
             isPopupShowing = true;
             return;
@@ -1361,6 +1393,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onClick(View v) {
                     donationGateway();
                     dialog.dismiss();
+                    ed.putBoolean(shownTodayStr, shownToday);
+                    ed.apply();
                 }
             });
             TextView dismissBtn = (TextView) dialog.findViewById(R.id.maybeLaterDonateBtn);
@@ -1370,6 +1404,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     isPopupShowing = false;
                     shownToday = true;
                     dialog.dismiss();
+                    ed.putBoolean(shownTodayStr, shownToday);
+                    ed.apply();
                 }
             });
 
@@ -1381,8 +1417,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         ed.putInt("askForDonations", askForDonations);
+//        ed.putBoolean(shownTodayStr, shownToday);
+//        ed.putBoolean(getDate().replace("-", ""), shownToday);
 
-        ed.putBoolean(getDate(), shownToday);
 
         ed.apply();
 
@@ -1393,6 +1430,265 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cowinnotifier.site/donate"));
         startActivity(browserIntent);
     }
+
+    public void initializeAdCodes(boolean testMode) {
+
+
+        AudienceNetworkAds.initialize(this);
+
+        if (testMode) {
+            AdSettings.setTestMode(true);  // Test Mode
+            FBAdviewCode = "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID";
+            FBAdview2Code = FBAdviewCode;
+            FBAdview3Code = FBAdviewCode;
+            FBintadCode = FBAdviewCode; //Sample Code
+//            FBintadCode = "FBAdviewCode"; //Sample Code
+
+
+            GoogleBanner1AdCode = "ca-app-pub-3940256099942544/6300978111";
+            GoogleBanner2AdCode = GoogleBanner1AdCode;
+            GoogleBanner3AdCode = GoogleBanner1AdCode;
+            GoogleintadCode = "ca-app-pub-3940256099942544/1033173712";
+        } else {
+
+            FBAdviewCode = "829049141062090_829050204395317"; //Banner Top
+            FBAdview2Code = "829049141062090_829050397728631"; // Banner Middle Big
+            FBAdview3Code = "829049141062090_829050627728608"; //Banner Bottom
+            FBintadCode = "829049141062090_829049697728701"; //Interstitial Ad
+
+
+            GoogleBanner1AdCode = "ca-app-pub-8318706732545213/9313616493";
+            GoogleBanner2AdCode = "ca-app-pub-8318706732545213/5182799795";
+            GoogleBanner3AdCode = "ca-app-pub-8318706732545213/9901893563";
+            GoogleintadCode = "ca-app-pub-8318706732545213/4991228102";
+        }
+    }
+
+
+    public void loadInterstitial() {
+
+        // initializing InterstitialAd Object
+
+        // InterstitialAd Constructor Takes 2 Arguments
+
+        // 1)Context
+
+        // 2)Placement Id
+
+        intad = new InterstitialAd(this, FBintadCode);
+
+        // loading Ad
+        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
+
+            @Override
+
+            public void onInterstitialDisplayed(Ad ad) {
+
+                // Showing Toast Message
+
+//                Toast.makeText(MainActivity.this, "onInterstitialDisplayed", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+
+            public void onInterstitialDismissed(Ad ad) {
+
+                // Showing Toast Message
+
+//                Toast.makeText(MainActivity.this, "onInterstitialDismissed", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+
+            public void onError(Ad ad, AdError adError) {
+
+                // Showing Toast Message
+
+//                Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_SHORT).show();
+                loadGoogleInterestitialAd();
+
+            }
+
+            @Override
+
+            public void onAdLoaded(Ad ad) {
+
+                // Showing Toast Message
+
+//                Toast.makeText(MainActivity.this, "onAdLoaded", Toast.LENGTH_SHORT).show();
+                intad.show();
+
+            }
+
+            @Override
+
+            public void onAdClicked(Ad ad) {
+
+                // Showing Toast Message
+
+//                Toast.makeText(MainActivity.this, "onAdClicked", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+
+            public void onLoggingImpression(Ad ad) {
+
+                // Showing Toast Message
+
+//                Toast.makeText(MainActivity.this, "onLoggingImpression", Toast.LENGTH_SHORT).show();
+
+            }
+
+        };
+
+
+//        intad.loadAd();
+        intad.loadAd(
+                intad.buildLoadAdConfig()
+                        .withAdListener(interstitialAdListener)
+                        .build());
+    }
+
+
+    public com.google.android.gms.ads.AdView createGoogleBanner(String adCode, LinearLayout bannerBox){
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        com.google.android.gms.ads.AdView adViewG = new com.google.android.gms.ads.AdView(this);
+        adViewG.setAdSize(com.google.android.gms.ads.AdSize.BANNER);
+//        adViewG.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        adViewG.setAdUnitId(adCode);
+//        ((LinearLayout)findViewById(R.id.BannerBox)).addView(adViewG);
+        bannerBox.addView(adViewG);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adViewG.loadAd(adRequest);
+        return adViewG;
+
+    }
+
+    public void showGoogleBanner(com.google.android.gms.ads.AdView adViewG){
+        adViewG.loadAd(new AdRequest.Builder().build());
+//        boolean temp = false;
+//        if (adView!=null)
+//
+//        {
+////            adView.setVisibility(View.GONE);
+//            adView.destroy();
+//            showGoogleBanner(adViewGoogle1);
+//            temp = true;
+//        }
+//        if (adView2!=null)
+//        {
+//            adView2.destroy();
+//            showGoogleBanner(adViewGoogle2);
+//            temp = true;
+//        }
+//        if (adView3!=null)
+//        {
+//            adView3.destroy();
+//            showGoogleBanner(adViewGoogle3);
+//            temp = true;
+//        }
+//
+//        if (temp){
+//            loadBannerAds();
+//        }
+
+    }
+
+    public AdView createFacebookBanner(String adCode, LinearLayout bannerBox){
+        AdView adViewF = new AdView(this, adCode, AdSize.BANNER_HEIGHT_50);
+//        adView.setId(cntt++);
+//        ((LinearLayout)findViewById(R.id.BannerBox)).addView(adViewF);
+        bannerBox.addView(adViewF);
+        return adViewF;
+
+    }
+
+    public void showFacebookBanner(AdView adV){
+        Log.d("adsStatus", String.valueOf(showFacebookAds));
+        AdListener adListener = new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                // Ad error callback
+//                Toast.makeText(
+//                        MainActivity.this,
+//                        "Error: " + adError.getErrorMessage(),
+//                        Toast.LENGTH_LONG)
+//                        .show();
+//                cntt = 0;
+//                AdView adView = new AdView(this);
+//
+//                adView.setAdSize(AdSize.BANNER);
+//                adView = new AdView(this, AdviewCode, AdSize.BANNER_HEIGHT_50);
+//                adView.setId(cntt++);
+//                ((LinearLayout)findViewById(R.id.BannerBox)).addView(adView);
+//                adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
+//                Banner1();
+                showFacebookAds = false;
+//                ReplacementGoogleBanner.setVisibility(View.VISIBLE);
+                adV.setVisibility(View.GONE);
+                adV.destroy();
+
+//                showGoogleBanner(ReplacementGoogleBanner);
+//                adView.setVisibility(View.GONE);
+//                adView.destroy();
+
+
+
+
+
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                // Ad loaded callback
+//                showFacebookAds = true;
+//                ReplacementGoogleBanner.setVisibility(View.GONE);
+                adV.setVisibility(View.VISIBLE);
+//                ReplacementGoogleBanner.destroy();
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                // Ad clicked callback
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                // Ad impression logged callback
+            }
+        };
+        adV.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
+    }
+
+
+    public void loadGoogleInterestitialAd(){
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        com.google.android.gms.ads.interstitial.InterstitialAd.load(this,GoogleintadCode, adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
+//                super.onAdLoaded(interstitialAd);
+                mInterstitialAd = interstitialAd;
+                mInterstitialAd.show(MainActivity.this);
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+//                super.onAdFailedToLoad(loadAdError);
+                mInterstitialAd = null;
+            }
+        });
+    }
+
+
+
 
 }
 //startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:"+getPackageName())));
