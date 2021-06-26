@@ -77,6 +77,7 @@ import com.facebook.ads.InterstitialAdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.AdapterStatus;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
@@ -99,6 +100,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
@@ -254,35 +256,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adView3 = createFacebookBanner(FBAdview3Code, (LinearLayout)findViewById(R.id.bannerAd3));
         adViewGoogle3 = createGoogleBanner(GoogleBanner3AdCode, (LinearLayout)findViewById(R.id.bannerAd3));
 
-//        showFacebookBanner(adView, adViewGoogle1);
-        showFacebookBanner(adView);
+        showFacebookBanner(adView, adViewGoogle1);
+
+
+//        showFacebookBanner(adView);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (showFacebookAds){
-                    showFacebookBanner(adView2);
-//                    showFacebookBanner(adView2, adViewGoogle2);
-//                    showFacebookBanner(adView3, adViewGoogle3);
-                }
-                else{
+                if (showFacebookAds)
+                    showFacebookBanner(adView2, adViewGoogle2);
+                else
                     showGoogleBanner(adViewGoogle2);
-                    adView.destroy();
-                    showGoogleBanner(adViewGoogle1);
-//                    showGoogleBanner(adViewGoogle3);
-                }
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (showFacebookAds){
-//                            showFacebookBanner(adView2, adViewGoogle2);
-                            showFacebookBanner(adView3);
-//                            showFacebookBanner(adView3, adViewGoogle3);
-                        }
-                        else{
-//                            showGoogleBanner(adViewGoogle2);
+                        if (showFacebookAds)
+                            showFacebookBanner(adView3, adViewGoogle3);
+                        else
                             showGoogleBanner(adViewGoogle3);
-                        }
                     }
                 }, 3*1000);
             }
@@ -374,12 +366,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
 
-                if (isInternetConnected(MainActivity.this)) {
+
 
                     String pincode = pinBox.getText().toString().trim();
                     if (pincode.length() != 6) {
                         Toast.makeText(getApplicationContext(), "Please Enter Valid Pincode", Toast.LENGTH_SHORT).show();
-                    } else {
+                    } else if (isInternetConnected(MainActivity.this)) {
                         findSlots("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + getDate());
                         SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
                         SharedPreferences.Editor ed = sp.edit();
@@ -389,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         loadInterstitial();
                         loadBannerAds();
                     }
-                }
+
 
             }
         });
@@ -399,12 +391,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
 
-                if (isInternetConnected(MainActivity.this)) {
+
 
                     if (apiURL == "") {
 //                        getStates();
                         Toast.makeText(getApplicationContext(), "Please Select a Valid State/District", Toast.LENGTH_SHORT).show();
-                    } else {
+                    } else if (isInternetConnected(MainActivity.this)) {
 //                        Toast.makeText(getApplicationContext(), "D->"+selectedDist, Toast.LENGTH_SHORT).show();
                         SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
                         SharedPreferences.Editor ed = sp.edit();
@@ -418,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         loadInterstitial();
                         loadBannerAds();
                     }
-                }
+
 
             }
         });
@@ -503,13 +495,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startChecking();
 //                        if (!apiURL.equals("") && !searchMode)
 //                        {
+                        loadBannerAds();
                         getStates();
 //                        }
 
                     } else if (title.getText() == errorTitles[1]) {
                         if (!apiURL.equals("") && !searchMode) {
                             findSlots(apiURL);
-                        } else if (searchMode && myPin != "") {
+                        } else if (searchMode && !myPin.equals("")) {
                             findSlots("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + myPin + "&date=" + getDate());
                         }
                     }
@@ -762,6 +755,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             pinView.setVisibility(View.GONE);
             distView.setVisibility(View.VISIBLE);
         }
+        loadBannerAds();
     }
 
     private void getStates() {
@@ -1113,6 +1107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        {
 //            return;
 //        }
+        closeKeyboard();
         LinearLayout slotInfo = (LinearLayout) findViewById(R.id.slotInfo);
         slotInfo.setVisibility(View.VISIBLE);
 
@@ -1152,7 +1147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return date;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     private void closeKeyboard() {
         // this will give us the view
         // which is currently focus
@@ -1309,16 +1304,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void loadBannerAds() {
+
+//        showFacebookBanner(adView, adViewGoogle1);
+//        showFacebookBanner(adView2, adViewGoogle2);
+//        showFacebookBanner(adView3, adViewGoogle3);
 //        adView.loadAd();
 //        adView2.loadAd();
 //        adView3.loadAd();
         if (showFacebookAds){
-//            showFacebookBanner(adView, adViewGoogle1);
-//            showFacebookBanner(adView2, adViewGoogle2);
-//            showFacebookBanner(adView3, adViewGoogle3);
-            showFacebookBanner(adView);
-            showFacebookBanner(adView2);
-            showFacebookBanner(adView3);
+            showFacebookBanner(adView, adViewGoogle1);
+            showFacebookBanner(adView2, adViewGoogle2);
+            showFacebookBanner(adView3, adViewGoogle3);
+//            showFacebookBanner(adView);
+//            showFacebookBanner(adView2);
+//            showFacebookBanner(adView3);
         }
         else {
             showGoogleBanner(adViewGoogle1);
@@ -1345,12 +1344,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 share.putExtra(Intent.EXTRA_TEXT, appurl);
                 startActivity(Intent.createChooser(share, "Choose App to Share"));
                 break;
-            case R.id.donateBtn:
-                donationGateway();
-                break;
+//            case R.id.donateBtn:
+//                donationGateway();
+//                break;
             case R.id.abousUsBtn:
-                Intent browserIntent2 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cowinnotifier.site"));
-                startActivity(browserIntent2);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://cowinnotifier.site")));
+                break;
+            case R.id.privacyPolicyBtn:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://cowinnotifier.site/privacy-policy.php")));
                 break;
 
         }
@@ -1366,70 +1367,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //debug without donation
 //        donationGateway();
-//        if (true){
-//            return;
-//        }
-
-        SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-
-        String shownTodayStr = "shownToday"+getDate().replace("-", "");
-        shownToday = sp.getBoolean(shownTodayStr, false);
-        if (shownToday){
-            isPopupShowing = true;
+        if (true){
             return;
         }
 
-        if (askForDonations>=200 && !isPopupShowing){
-            askForDonations = 0;
-            final Dialog dialog = new Dialog(MainActivity.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(true);
-            dialog.setContentView(R.layout.donate_popup);
+//        SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor ed = sp.edit();
+//
+//        String shownTodayStr = "shownToday"+getDate().replace("-", "");
+//        shownToday = sp.getBoolean(shownTodayStr, false);
+//        if (shownToday){
+//            isPopupShowing = true;
+//            return;
+//        }
+//
+//        if (askForDonations>=200 && !isPopupShowing){
+//            askForDonations = 0;
+//            final Dialog dialog = new Dialog(MainActivity.this);
+//            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            dialog.setCancelable(true);
+//            dialog.setContentView(R.layout.donate_popup);
+//
+//            Button dialogButton = (Button) dialog.findViewById(R.id.donateBtn);
+//            dialogButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                    donationGateway();
+//                    dialog.dismiss();
+//                    ed.putBoolean(shownTodayStr, shownToday);
+//                    ed.apply();
+//                }
+//            });
+//            TextView dismissBtn = (TextView) dialog.findViewById(R.id.maybeLaterDonateBtn);
+//            dismissBtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    isPopupShowing = false;
+//                    shownToday = true;
+//                    dialog.dismiss();
+//                    ed.putBoolean(shownTodayStr, shownToday);
+//                    ed.apply();
+//                }
+//            });
+//
+//            isPopupShowing = true;
+//            dialog.show();
 
-            Button dialogButton = (Button) dialog.findViewById(R.id.donateBtn);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    donationGateway();
-                    dialog.dismiss();
-                    ed.putBoolean(shownTodayStr, shownToday);
-                    ed.apply();
-                }
-            });
-            TextView dismissBtn = (TextView) dialog.findViewById(R.id.maybeLaterDonateBtn);
-            dismissBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    isPopupShowing = false;
-                    shownToday = true;
-                    dialog.dismiss();
-                    ed.putBoolean(shownTodayStr, shownToday);
-                    ed.apply();
-                }
-            });
 
-            isPopupShowing = true;
-            dialog.show();
-
-
-        }
-
-
-        ed.putInt("askForDonations", askForDonations);
-//        ed.putBoolean(shownTodayStr, shownToday);
-//        ed.putBoolean(getDate().replace("-", ""), shownToday);
-
-
-        ed.apply();
+//        }
+//
+//
+//        ed.putInt("askForDonations", askForDonations);
+////        ed.putBoolean(shownTodayStr, shownToday);
+////        ed.putBoolean(getDate().replace("-", ""), shownToday);
+//
+//
+//        ed.apply();
 
     }
 
-    private void donationGateway(){
-//        Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cowinnotifier.site/donate"));
-        startActivity(browserIntent);
-    }
+//    private void donationGateway(){
+////        Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
+//        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cowinnotifier.site/donate"));
+//        startActivity(browserIntent);
+//    }
 
     public void initializeAdCodes(boolean testMode) {
 
@@ -1462,18 +1463,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             GoogleBanner3AdCode = "ca-app-pub-8318706732545213/9901893563";
             GoogleintadCode = "ca-app-pub-8318706732545213/4991228102";
         }
+
+        MobileAds.initialize(MainActivity.this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
+                for (String adapterClass : statusMap.keySet()) {
+                    AdapterStatus status = statusMap.get(adapterClass);
+                    Log.d("MyApp", String.format(
+                            "Adapter name: %s, Description: %s, Latency: %d",
+                            adapterClass, status.getDescription(), status.getLatency()));
+                }
+
+                // Start loading ads here...
+            }
+        });
     }
 
 
     public void loadInterstitial() {
-
-        // initializing InterstitialAd Object
-
-        // InterstitialAd Constructor Takes 2 Arguments
-
-        // 1)Context
-
-        // 2)Placement Id
 
         intad = new InterstitialAd(this, FBintadCode);
 
@@ -1610,7 +1618,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public void showFacebookBanner(AdView adV){
+    public void showFacebookBanner(AdView adV, com.google.android.gms.ads.AdView ReplacementGoogleBanner){
         Log.d("adsStatus", String.valueOf(showFacebookAds));
         AdListener adListener = new AdListener() {
             @Override
@@ -1632,10 +1640,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                Banner1();
                 showFacebookAds = false;
 //                ReplacementGoogleBanner.setVisibility(View.VISIBLE);
-                adV.setVisibility(View.GONE);
-                adV.destroy();
+//                adV.setVisibility(View.GONE);
+//                adV.destroy();
 
-//                showGoogleBanner(ReplacementGoogleBanner);
+                showGoogleBanner(ReplacementGoogleBanner);
 //                adView.setVisibility(View.GONE);
 //                adView.destroy();
 
@@ -1650,7 +1658,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // Ad loaded callback
 //                showFacebookAds = true;
 //                ReplacementGoogleBanner.setVisibility(View.GONE);
-                adV.setVisibility(View.VISIBLE);
+//                adV.setVisibility(View.VISIBLE);
 //                ReplacementGoogleBanner.destroy();
             }
 

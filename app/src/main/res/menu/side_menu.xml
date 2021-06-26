@@ -23,10 +23,14 @@
             android:title="About Us"
             android:icon="@drawable/info_icon" />
 
+<!--        <item-->
+<!--            android:id="@+id/donateBtn"-->
+<!--            android:title="Donate"-->
+<!--            android:icon="@drawable/money_icon" />-->
         <item
-            android:id="@+id/donateBtn"
-            android:title="Donate"
-            android:icon="@drawable/money_icon" />
+            android:id="@+id/privacyPolicyBtn"
+            android:title="Privacy Policy"
+            android:icon="@drawable/privacy_policy_icon" />
 
     </group>
 
