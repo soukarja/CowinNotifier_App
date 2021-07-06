@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private long pressedTime;
     private boolean isPopupShowing = false;
     private AdView adView, adView2, adView3;
-//    private String AdviewCode, Adview2Code, Adview3Code, intadCode;
+    //    private String AdviewCode, Adview2Code, Adview3Code, intadCode;
     private InterstitialAd intad;
 
     private String FBAdviewCode, FBAdview2Code, FBAdview3Code, FBintadCode;
@@ -145,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public com.google.android.gms.ads.AdView adViewGoogle1, adViewGoogle2, adViewGoogle3;
     private boolean showFacebookAds = false;
 
+    private adsManager ads;
 
 
     DrawerLayout drawerLayout;
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    Toolbar toolbar;
 
     private boolean isDrwawerOpen = false;
+    private boolean isAdsShown = false;
 
     private String[] errorTitles = new String[]{"No Internet Connection", "No Results Found"};
     private String[] errorSubTitles = new String[]{"Internet connection is required to check for new slots. Please connect to the internet and try again!", "Try searching for different location/filters or try again later. Turn on Notifications to stay alert whenever there's a slot."};
@@ -163,11 +166,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<vaccineInfoModel> vaccineInfoList;
     vaccineInfoAdapter adapter;
 
-//    @RequiresApi(api = Build.VERSION_CODES.M)
+    //    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ads = new adsManager(MainActivity.this, false);
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
@@ -214,91 +219,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         OneSignal.initWithContext(this);
         OneSignal.setAppId(ONESIGNAL_APP_ID);
 
-        AudienceNetworkAds.initialize(this);
 
-//        AdviewCode = "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID"; //Sample Code
-//        AdviewCode = "829049141062090_829050204395317"; //Sample Code
-//        Adview2Code = "829049141062090_829050397728631"; //Sample Code
-//        Adview3Code = "829049141062090_829050627728608"; //Sample Code
-//        intadCode = "829049141062090_829049697728701"; //Sample Code
-        initializeAdCodes(false);
-//        AdSettings.addTestDevice("HASHED ID");
-//        AdSettings.setTestMode(true); // Test Mode
-//        int cntt = 0;
-//        LinearLayout bannerBox = (LinearLayout) findViewById(R.id.bannerAd1);
-//        adView = new AdView(this, AdviewCode,AdSize.BANNER_HEIGHT_50);
-//        adView.setId(cntt++);
-//        bannerBox.addView(adView);
-//        adView.loadAd();
-//
-//        bannerBox = (LinearLayout) findViewById(R.id.bannerAd2);
-//        adView2 = new AdView(this, Adview2Code, AdSize.BANNER_HEIGHT_50);
-////        adView2 = new com.facebook.ads.AdView(this, Adview2Code, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
-//        adView2.setId(cntt++);
-//        bannerBox.addView(adView2);
-//        adView2.loadAd();
-//
-//        bannerBox = (LinearLayout) findViewById(R.id.bannerAd3);
-//        adView3 = new AdView(this, Adview3Code, AdSize.BANNER_HEIGHT_50);
-////        adView3 = new com.facebook.ads.AdView(this, Adview3Code, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
-//        adView3.setId(cntt++);
-//        bannerBox.addView(adView3);
-//        adView3.loadAd();
+        loadBannerAds();
 
-        adView = createFacebookBanner(FBAdviewCode, (LinearLayout)findViewById(R.id.bannerAd1));
-        adViewGoogle1 = createGoogleBanner(GoogleBanner1AdCode, (LinearLayout)findViewById(R.id.bannerAd1));
-
-
-
-        adView2 = createFacebookBanner(FBAdview2Code, (LinearLayout)findViewById(R.id.bannerAd2));
-        adViewGoogle2 = createGoogleBanner(GoogleBanner2AdCode, (LinearLayout)findViewById(R.id.bannerAd2));
-
-        adView3 = createFacebookBanner(FBAdview3Code, (LinearLayout)findViewById(R.id.bannerAd3));
-        adViewGoogle3 = createGoogleBanner(GoogleBanner3AdCode, (LinearLayout)findViewById(R.id.bannerAd3));
-
-        showFacebookBanner(adView, adViewGoogle1);
-
-
-//        showFacebookBanner(adView);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (showFacebookAds)
-                    showFacebookBanner(adView2, adViewGoogle2);
-                else
-                    showGoogleBanner(adViewGoogle2);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (showFacebookAds)
-                            showFacebookBanner(adView3, adViewGoogle3);
-                        else
-                            showGoogleBanner(adViewGoogle3);
-                    }
-                }, 3*1000);
-            }
-        }, 3*1000);
-
-//        if (showFacebookAds){
-//            showFacebookBanner(adView2, adViewGoogle2);
-//            showFacebookBanner(adView3, adViewGoogle3);
-//        }
-//        else{
-//            showGoogleBanner(adViewGoogle2);
-//            showGoogleBanner(adViewGoogle3);
-//        }
-
-
-
-//        bad1.addView(adView);
-//        ll2.addView(bad1); //linearLayout
-//        adView.loadAd()
-
-//        loadInterstitial();
-//        adView.loadAd();
-//        adView2.loadAd();
-//        adView3.loadAd();
         apiURL = "";
 
         TextView searchPincode = (TextView) findViewById(R.id.searchPincode);
@@ -367,20 +290,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
 
 
-
-                    String pincode = pinBox.getText().toString().trim();
-                    if (pincode.length() != 6) {
-                        Toast.makeText(getApplicationContext(), "Please Enter Valid Pincode", Toast.LENGTH_SHORT).show();
-                    } else if (isInternetConnected(MainActivity.this)) {
-                        findSlots("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + getDate());
-                        SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor ed = sp.edit();
-                        ed.putString("pincode", pincode);
-                        ed.putBoolean("search_mode", true);
-                        ed.apply();
-                        loadInterstitial();
-                        loadBannerAds();
-                    }
+                String pincode = pinBox.getText().toString().trim();
+                if (pincode.length() != 6) {
+                    Toast.makeText(getApplicationContext(), "Please Enter Valid Pincode", Toast.LENGTH_SHORT).show();
+                } else if (isInternetConnected(MainActivity.this)) {
+                    findSlots("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + getDate());
+                    SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor ed = sp.edit();
+                    ed.putString("pincode", pincode);
+                    ed.putBoolean("search_mode", true);
+                    ed.apply();
+                    ads.showInterstitialAds();
+                    isAdsShown = true;
+                    loadBannerAds();
+                }
 
 
             }
@@ -392,81 +315,104 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
 
 
-
-                    if (apiURL == "") {
+                if (apiURL == "") {
 //                        getStates();
-                        Toast.makeText(getApplicationContext(), "Please Select a Valid State/District", Toast.LENGTH_SHORT).show();
-                    } else if (isInternetConnected(MainActivity.this)) {
+                    Toast.makeText(getApplicationContext(), "Please Select a Valid State/District", Toast.LENGTH_SHORT).show();
+                } else if (isInternetConnected(MainActivity.this)) {
 //                        Toast.makeText(getApplicationContext(), "D->"+selectedDist, Toast.LENGTH_SHORT).show();
-                        SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor ed = sp.edit();
-                        ed.putString("selectedState", selectedState);
-                        ed.putString("selectedStateID", selectedStateID);
-                        ed.putString("selectedDist", selectedDist);
-                        ed.putString("selectedDistID", selectedDistID);
-                        ed.putBoolean("search_mode", false);
-                        ed.apply();
-                        findSlots(apiURL);
-                        loadInterstitial();
-                        loadBannerAds();
-                    }
+                    SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor ed = sp.edit();
+                    ed.putString("selectedState", selectedState);
+                    ed.putString("selectedStateID", selectedStateID);
+                    ed.putString("selectedDist", selectedDist);
+                    ed.putString("selectedDistID", selectedDistID);
+                    ed.putBoolean("search_mode", false);
+                    ed.apply();
+                    findSlots(apiURL);
+                    ads.showInterstitialAds();
+                    isAdsShown = true;
+                    loadBannerAds();
+                }
 
 
             }
         });
 
 
-//        TextInputLayout dist = (TextInputLayout) findViewById(R.id.distLayout);
-//        dist.setVisibility(View.INVISIBLE);
-        Button filter18PlusBtn = (Button) findViewById(R.id.filter18plus);
+        TextView filter18PlusBtn = (TextView) findViewById(R.id.filter18plus);
         filter18PlusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filter18Plus = !filter18Plus;
                 setFilters();
+                if (!isAdsShown)
+                {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
             }
         });
-        Button filter45PlusBtn = (Button) findViewById(R.id.filter45plus);
+        TextView filter45PlusBtn = (TextView) findViewById(R.id.filter45plus);
         filter45PlusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filter45Plus = !filter45Plus;
                 setFilters();
+                if (!isAdsShown)
+                {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
             }
         });
 
 
-        Button filterCovishieldBtn = (Button) findViewById(R.id.filterCovishield);
+        TextView filterCovishieldBtn = (TextView) findViewById(R.id.filterCovishield);
         filterCovishieldBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filterCovisheild = !filterCovisheild;
                 setFilters();
+                if (!isAdsShown)
+                {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
             }
         });
 
 
-        Button filterCovaxinBtn = (Button) findViewById(R.id.filterCovaxin);
+        TextView filterCovaxinBtn = (TextView) findViewById(R.id.filterCovaxin);
         filterCovaxinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filterCovaxin = !filterCovaxin;
                 setFilters();
+                if (!isAdsShown)
+                {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
             }
         });
 
 
-        Button filterSputnikVBtn = (Button) findViewById(R.id.filterSputnikV);
+        TextView filterSputnikVBtn = (TextView) findViewById(R.id.filterSputnikV);
         filterSputnikVBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filterSputnikV = !filterSputnikV;
                 setFilters();
+                if (!isAdsShown)
+                {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
             }
         });
 
 
-        Button filterFreeBtn = (Button) findViewById(R.id.filterFree);
+        TextView filterFreeBtn = (TextView) findViewById(R.id.filterFree);
         filterFreeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -476,12 +422,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-        Button filterPaidBtn = (Button) findViewById(R.id.filterPaid);
+        TextView filterPaidBtn = (TextView) findViewById(R.id.filterPaid);
         filterPaidBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filterPaid = !filterPaid;
                 setFilters();
+                if (!isAdsShown)
+                {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
             }
         });
 
@@ -542,7 +493,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://selfregistration.cowin.gov.in/"));
                 startActivity(browserIntent);
-                askForDonations+=100;
+                askForDonations += 100;
                 askForDonationFromUser();
 
             }
@@ -562,7 +513,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.cancel();
-                                    loadInterstitial();
+                                    ads.showInterstitialAds();
+                                    isAdsShown = true;
                                     loadBannerAds();
                                 }
                             });
@@ -570,9 +522,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     AlertDialog alert = builder.create();
                     alert.setTitle("App Needs to Run In Background");
                     alert.show();
-                }
-                else {
-                    loadInterstitial();
+                } else {
+                    ads.showInterstitialAds();
+                    isAdsShown = true;
                     loadBannerAds();
                 }
                 setNotificationToggle(notiToggleBtn);
@@ -584,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         slotInfo.setVisibility(View.GONE);
 
 
-        ScrollView sc = (ScrollView)findViewById(R.id.scrollViewMain);
+        ScrollView sc = (ScrollView) findViewById(R.id.scrollViewMain);
         ExtendedFloatingActionButton fab = (ExtendedFloatingActionButton) findViewById(R.id.scrollToTopButton);
         fab.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -592,11 +544,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 //                    Log.d("scrollPosition", String.valueOf(scrollY));
-                    if (scrollY>=2000)
-                    {
+                    if (scrollY >= 2000) {
                         fab.setVisibility(View.VISIBLE);
-                    }
-                    else {
+                    } else {
                         fab.setVisibility(View.GONE);
                     }
                 }
@@ -607,73 +557,158 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
 //                sc.scrollTo(0,0);
-                sc.smoothScrollTo(0,0);
+                sc.smoothScrollTo(0, 0);
             }
         });
 
     }
 
     private void setFilters() {
-        Button filterBtn = (Button) findViewById(R.id.filter18plus);
+        TextView filterBtn = (TextView) findViewById(R.id.filter18plus);
         if (filter18Plus) {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
-            filterBtn.setTextColor(getResources().getColor(R.color.white));
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
         } else {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
             filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
         }
 
-        filterBtn = (Button) findViewById(R.id.filter45plus);
+        filterBtn = (TextView) findViewById(R.id.filter45plus);
         if (filter45Plus) {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
-            filterBtn.setTextColor(getResources().getColor(R.color.white));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
         } else {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
             filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
         }
 
-        filterBtn = (Button) findViewById(R.id.filterCovishield);
+        filterBtn = (TextView) findViewById(R.id.filterCovishield);
         if (filterCovisheild) {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
-            filterBtn.setTextColor(getResources().getColor(R.color.white));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
         } else {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
             filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
         }
 
-        filterBtn = (Button) findViewById(R.id.filterCovaxin);
+        filterBtn = (TextView) findViewById(R.id.filterCovaxin);
         if (filterCovaxin) {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
-            filterBtn.setTextColor(getResources().getColor(R.color.white));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
         } else {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
             filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
         }
 
-        filterBtn = (Button) findViewById(R.id.filterSputnikV);
+        filterBtn = (TextView) findViewById(R.id.filterSputnikV);
         if (filterSputnikV) {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
-            filterBtn.setTextColor(getResources().getColor(R.color.white));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
         } else {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
             filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
         }
-        filterBtn = (Button) findViewById(R.id.filterFree);
+        filterBtn = (TextView) findViewById(R.id.filterFree);
         if (filterFree) {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
-            filterBtn.setTextColor(getResources().getColor(R.color.white));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
         } else {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
             filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
         }
 
-        filterBtn = (Button) findViewById(R.id.filterPaid);
+        filterBtn = (TextView) findViewById(R.id.filterPaid);
         if (filterPaid) {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
-            filterBtn.setTextColor(getResources().getColor(R.color.white));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
         } else {
-            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
             filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
         }
         CheckBox doseBtn = (CheckBox) findViewById(R.id.filterDose1Btn);
         doseBtn.setChecked(filterDose1);
@@ -695,14 +730,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ed.apply();
 
 
-//        if (searchMode){
-//            EditText pinBox = (EditText)findViewById(R.id.pinBox);
-//            String pincode = pinBox.getText().toString().trim();
-//                findSlots("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode="+pincode+"&date="+getDate());
-//        }
-//        else {
-//            findSlots(apiURL);
-//        }
         if (centerList != null) {
             displaySlots(centerList, true);
         }
@@ -903,8 +930,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if (pos >= 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                             distr.setText(distr.getAdapter().getItem(pos).toString(), false);
                         }
-                            apiURL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=" + selectedDistID + "&date=" + getDate();
-                            findSlots(apiURL);
+                        apiURL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=" + selectedDistID + "&date=" + getDate();
+                        findSlots(apiURL);
                     }
 
                     distr.addTextChangedListener(new TextWatcher() {
@@ -948,11 +975,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void displaySlots(JSONArray centerList, boolean updateDisplay){
+    private void displaySlots(JSONArray centerList, boolean updateDisplay) {
         displaySlots(centerList, updateDisplay, false);
     }
 
     private void displaySlots(JSONArray centerList, boolean updateDisplay, boolean pushNotification) {
+        noti_count = 0;
 //        Toast.makeText(getApplicationContext(), String.valueOf(centerList.length()), Toast.LENGTH_SHORT).show();
         vaccineInfoList = new ArrayList<>();
 
@@ -1056,7 +1084,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         } else {
                             locat = selectedDist + ", " + selectedState;
                         }
-                        if (pushNotification){
+                        if (pushNotification && noti_count <= 3) {
+                            noti_count += 1;
                             addNotification("New Vaccination Slots Available at " + locat, "Center: " + centerName + ", Slots Available: " + String.valueOf(dose1Quantity + dose2Quantity), centerID);
                         }
                     }
@@ -1098,15 +1127,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void findSlots(String urlLink){
+    private void findSlots(String urlLink) {
         findSlots(urlLink, false);
     }
 
     private void findSlots(String urlLink, boolean pushNoti) {
-//        if(!isInternetConnected(MainActivity.this))
-//        {
-//            return;
-//        }
+
         closeKeyboard();
         LinearLayout slotInfo = (LinearLayout) findViewById(R.id.slotInfo);
         slotInfo.setVisibility(View.VISIBLE);
@@ -1209,8 +1235,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-
+    private int noti_count = 0;
     public void startChecking() {
+        noti_count = 0;
         if (!startedChecking && notiToggleBtn) {
             startedChecking = true;
 
@@ -1274,7 +1301,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                mp.release();
 //                mp = MediaPlayer.create(this, R.raw.notification_sound);
                 mp.start();
-                askForDonations+=10;
+                askForDonations += 10;
                 askForDonationFromUser();
             }
             pressedTime = System.currentTimeMillis();
@@ -1288,16 +1315,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
 //        super.onBackPressed();
 
-        if (pressedTime + 3000 > System.currentTimeMillis()) {
-            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-            homeIntent.addCategory(Intent.CATEGORY_HOME);
-            homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(homeIntent);
+//        if (pressedTime + 3000 > System.currentTimeMillis()) {
+//            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+//            homeIntent.addCategory(Intent.CATEGORY_HOME);
+//            homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(homeIntent);
+//        } else {
+//            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+//        }
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage("Are you sure you want to Exit?")
+                    .setCancelable(true)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setPositiveButton("Close App", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                            homeIntent.addCategory(Intent.CATEGORY_HOME);
+                            homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(homeIntent);
+                        }
+                    })
+                    .setNeutralButton("Rate Us", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String appurl = "https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(appurl)));
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.setTitle("Close App");
+            alert.show();
         }
-        drawerLayout.closeDrawer(GravityCompat.START);
-        pressedTime = System.currentTimeMillis();
+//        pressedTime = System.currentTimeMillis();
 
 
     }
@@ -1305,25 +1365,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void loadBannerAds() {
 
-//        showFacebookBanner(adView, adViewGoogle1);
-//        showFacebookBanner(adView2, adViewGoogle2);
-//        showFacebookBanner(adView3, adViewGoogle3);
-//        adView.loadAd();
-//        adView2.loadAd();
-//        adView3.loadAd();
-        if (showFacebookAds){
-            showFacebookBanner(adView, adViewGoogle1);
-            showFacebookBanner(adView2, adViewGoogle2);
-            showFacebookBanner(adView3, adViewGoogle3);
-//            showFacebookBanner(adView);
-//            showFacebookBanner(adView2);
-//            showFacebookBanner(adView3);
-        }
-        else {
-            showGoogleBanner(adViewGoogle1);
-            showGoogleBanner(adViewGoogle2);
-            showGoogleBanner(adViewGoogle3);
-        }
+        if (adView == null)
+            adView = ads.createFacebookBanner(ads.FacebookBanner1, (LinearLayout) findViewById(R.id.bannerAd1));
+
+        if (adViewGoogle1 == null)
+            adViewGoogle1 = ads.createGoogleBanner(ads.GoogleBanner1, (LinearLayout) findViewById(R.id.bannerAd1));
+
+        if (adView2 == null)
+            adView2 = ads.createFacebookBanner(ads.FacebookBanner2, (LinearLayout) findViewById(R.id.bannerAd2));
+
+        if (adViewGoogle2 == null)
+            adViewGoogle2 = ads.createGoogleBanner(ads.GoogleBanner2, (LinearLayout) findViewById(R.id.bannerAd2));
+
+        if (adView3 == null)
+            adView3 = ads.createFacebookBanner(ads.FacebookBanner3, (LinearLayout) findViewById(R.id.bannerAd3));
+
+        if (adViewGoogle3 == null)
+            adViewGoogle3 = ads.createGoogleBanner(ads.GoogleBanner3, (LinearLayout) findViewById(R.id.bannerAd3));
+
+        ads.showBannerAds(adView, adViewGoogle1);
+//        ads.showBannerAds(adView2, adViewGoogle2);
+//        ads.showBannerAds(adView3, adViewGoogle3);
+//        ads.showFacebookBanner(adView2);
+//        ads.showFacebookBanner(adView3);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ads.showBannerAds(adView2, adViewGoogle2);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ads.showBannerAds(adView3, adViewGoogle3);
+                    }
+                }, 2000);
+            }
+        }, 2000);
     }
 
 
@@ -1362,12 +1438,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void askForDonationFromUser(){
+    private void askForDonationFromUser() {
 
 
         //debug without donation
 //        donationGateway();
-        if (true){
+        if (true) {
             return;
         }
 
@@ -1432,271 +1508,268 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        startActivity(browserIntent);
 //    }
 
-    public void initializeAdCodes(boolean testMode) {
+//    public void initializeAdCodes(boolean testMode) {
+//
+//
+//        AudienceNetworkAds.initialize(this);
+//
+//        if (testMode) {
+//            AdSettings.setTestMode(true);  // Test Mode
+//            FBAdviewCode = "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID";
+//            FBAdview2Code = FBAdviewCode;
+//            FBAdview3Code = FBAdviewCode;
+//            FBintadCode = FBAdviewCode; //Sample Code
+////            FBintadCode = "FBAdviewCode"; //Sample Code
+//
+//
+//            GoogleBanner1AdCode = "ca-app-pub-3940256099942544/6300978111";
+//            GoogleBanner2AdCode = GoogleBanner1AdCode;
+//            GoogleBanner3AdCode = GoogleBanner1AdCode;
+//            GoogleintadCode = "ca-app-pub-3940256099942544/1033173712";
+//        } else {
+//
+//            FBAdviewCode = "829049141062090_829050204395317"; //Banner Top
+//            FBAdview2Code = "829049141062090_829050397728631"; // Banner Middle Big
+//            FBAdview3Code = "829049141062090_829050627728608"; //Banner Bottom
+//            FBintadCode = "829049141062090_829049697728701"; //Interstitial Ad
+//
+//
+//            GoogleBanner1AdCode = "ca-app-pub-8318706732545213/9313616493";
+//            GoogleBanner2AdCode = "ca-app-pub-8318706732545213/5182799795";
+//            GoogleBanner3AdCode = "ca-app-pub-8318706732545213/9901893563";
+//            GoogleintadCode = "ca-app-pub-8318706732545213/4991228102";
+//        }
+//
+//        MobileAds.initialize(MainActivity.this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//                Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
+//                for (String adapterClass : statusMap.keySet()) {
+//                    AdapterStatus status = statusMap.get(adapterClass);
+//                    Log.d("MyApp", String.format(
+//                            "Adapter name: %s, Description: %s, Latency: %d",
+//                            adapterClass, status.getDescription(), status.getLatency()));
+//                }
+//
+//                // Start loading ads here...
+//            }
+//        });
+//    }
 
 
-        AudienceNetworkAds.initialize(this);
-
-        if (testMode) {
-            AdSettings.setTestMode(true);  // Test Mode
-            FBAdviewCode = "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID";
-            FBAdview2Code = FBAdviewCode;
-            FBAdview3Code = FBAdviewCode;
-            FBintadCode = FBAdviewCode; //Sample Code
-//            FBintadCode = "FBAdviewCode"; //Sample Code
-
-
-            GoogleBanner1AdCode = "ca-app-pub-3940256099942544/6300978111";
-            GoogleBanner2AdCode = GoogleBanner1AdCode;
-            GoogleBanner3AdCode = GoogleBanner1AdCode;
-            GoogleintadCode = "ca-app-pub-3940256099942544/1033173712";
-        } else {
-
-            FBAdviewCode = "829049141062090_829050204395317"; //Banner Top
-            FBAdview2Code = "829049141062090_829050397728631"; // Banner Middle Big
-            FBAdview3Code = "829049141062090_829050627728608"; //Banner Bottom
-            FBintadCode = "829049141062090_829049697728701"; //Interstitial Ad
-
-
-            GoogleBanner1AdCode = "ca-app-pub-8318706732545213/9313616493";
-            GoogleBanner2AdCode = "ca-app-pub-8318706732545213/5182799795";
-            GoogleBanner3AdCode = "ca-app-pub-8318706732545213/9901893563";
-            GoogleintadCode = "ca-app-pub-8318706732545213/4991228102";
-        }
-
-        MobileAds.initialize(MainActivity.this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
-                for (String adapterClass : statusMap.keySet()) {
-                    AdapterStatus status = statusMap.get(adapterClass);
-                    Log.d("MyApp", String.format(
-                            "Adapter name: %s, Description: %s, Latency: %d",
-                            adapterClass, status.getDescription(), status.getLatency()));
-                }
-
-                // Start loading ads here...
-            }
-        });
-    }
-
-
-    public void loadInterstitial() {
-
-        intad = new InterstitialAd(this, FBintadCode);
-
-        // loading Ad
-        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
-
-            @Override
-
-            public void onInterstitialDisplayed(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onInterstitialDisplayed", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-
-            public void onInterstitialDismissed(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onInterstitialDismissed", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-
-            public void onError(Ad ad, AdError adError) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_SHORT).show();
-                loadGoogleInterestitialAd();
-
-            }
-
-            @Override
-
-            public void onAdLoaded(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onAdLoaded", Toast.LENGTH_SHORT).show();
-                intad.show();
-
-            }
-
-            @Override
-
-            public void onAdClicked(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onAdClicked", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-
-            public void onLoggingImpression(Ad ad) {
-
-                // Showing Toast Message
-
-//                Toast.makeText(MainActivity.this, "onLoggingImpression", Toast.LENGTH_SHORT).show();
-
-            }
-
-        };
-
-
-//        intad.loadAd();
-        intad.loadAd(
-                intad.buildLoadAdConfig()
-                        .withAdListener(interstitialAdListener)
-                        .build());
-    }
-
-
-    public com.google.android.gms.ads.AdView createGoogleBanner(String adCode, LinearLayout bannerBox){
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-        com.google.android.gms.ads.AdView adViewG = new com.google.android.gms.ads.AdView(this);
-        adViewG.setAdSize(com.google.android.gms.ads.AdSize.BANNER);
-//        adViewG.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
-        adViewG.setAdUnitId(adCode);
-//        ((LinearLayout)findViewById(R.id.BannerBox)).addView(adViewG);
-        bannerBox.addView(adViewG);
+//    public void loadInterstitial() {
+//
+//        intad = new InterstitialAd(this, FBintadCode);
+//
+//        // loading Ad
+//        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
+//
+//            @Override
+//
+//            public void onInterstitialDisplayed(Ad ad) {
+//
+//                // Showing Toast Message
+//
+////                Toast.makeText(MainActivity.this, "onInterstitialDisplayed", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//
+//            public void onInterstitialDismissed(Ad ad) {
+//
+//                // Showing Toast Message
+//
+////                Toast.makeText(MainActivity.this, "onInterstitialDismissed", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//
+//            public void onError(Ad ad, AdError adError) {
+//
+//                // Showing Toast Message
+//
+////                Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_SHORT).show();
+//                loadGoogleInterestitialAd();
+//
+//            }
+//
+//            @Override
+//
+//            public void onAdLoaded(Ad ad) {
+//
+//                // Showing Toast Message
+//
+////                Toast.makeText(MainActivity.this, "onAdLoaded", Toast.LENGTH_SHORT).show();
+//                intad.show();
+//
+//            }
+//
+//            @Override
+//
+//            public void onAdClicked(Ad ad) {
+//
+//                // Showing Toast Message
+//
+////                Toast.makeText(MainActivity.this, "onAdClicked", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//
+//            public void onLoggingImpression(Ad ad) {
+//
+//                // Showing Toast Message
+//
+////                Toast.makeText(MainActivity.this, "onLoggingImpression", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//        };
+//
+//
+////        intad.loadAd();
+//        intad.loadAd(
+//                intad.buildLoadAdConfig()
+//                        .withAdListener(interstitialAdListener)
+//                        .build());
+//    }
+//
+//
+//    public com.google.android.gms.ads.AdView createGoogleBanner(String adCode, LinearLayout bannerBox){
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//            }
+//        });
+//        com.google.android.gms.ads.AdView adViewG = new com.google.android.gms.ads.AdView(this);
+//        adViewG.setAdSize(com.google.android.gms.ads.AdSize.BANNER);
+////        adViewG.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+//        adViewG.setAdUnitId(adCode);
+////        ((LinearLayout)findViewById(R.id.BannerBox)).addView(adViewG);
+//        bannerBox.addView(adViewG);
+////        AdRequest adRequest = new AdRequest.Builder().build();
+////        adViewG.loadAd(adRequest);
+//        return adViewG;
+//
+//    }
+//
+//    public void showGoogleBanner(com.google.android.gms.ads.AdView adViewG){
+//        adViewG.loadAd(new AdRequest.Builder().build());
+////        boolean temp = false;
+////        if (adView!=null)
+////
+////        {
+//////            adView.setVisibility(View.GONE);
+////            adView.destroy();
+////            showGoogleBanner(adViewGoogle1);
+////            temp = true;
+////        }
+////        if (adView2!=null)
+////        {
+////            adView2.destroy();
+////            showGoogleBanner(adViewGoogle2);
+////            temp = true;
+////        }
+////        if (adView3!=null)
+////        {
+////            adView3.destroy();
+////            showGoogleBanner(adViewGoogle3);
+////            temp = true;
+////        }
+////
+////        if (temp){
+////            loadBannerAds();
+////        }
+//
+//    }
+//
+//    public AdView createFacebookBanner(String adCode, LinearLayout bannerBox){
+//        AdView adViewF = new AdView(this, adCode, AdSize.BANNER_HEIGHT_50);
+////        adView.setId(cntt++);
+////        ((LinearLayout)findViewById(R.id.BannerBox)).addView(adViewF);
+//        bannerBox.addView(adViewF);
+//        return adViewF;
+//
+//    }
+//
+//    public void showFacebookBanner(AdView adV, com.google.android.gms.ads.AdView ReplacementGoogleBanner){
+//        Log.d("adsStatus", String.valueOf(showFacebookAds));
+//        AdListener adListener = new AdListener() {
+//            @Override
+//            public void onError(Ad ad, AdError adError) {
+//                // Ad error callback
+////                Toast.makeText(
+////                        MainActivity.this,
+////                        "Error: " + adError.getErrorMessage(),
+////                        Toast.LENGTH_LONG)
+////                        .show();
+////                cntt = 0;
+////                AdView adView = new AdView(this);
+////
+////                adView.setAdSize(AdSize.BANNER);
+////                adView = new AdView(this, AdviewCode, AdSize.BANNER_HEIGHT_50);
+////                adView.setId(cntt++);
+////                ((LinearLayout)findViewById(R.id.BannerBox)).addView(adView);
+////                adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
+////                Banner1();
+//                showFacebookAds = false;
+////                ReplacementGoogleBanner.setVisibility(View.VISIBLE);
+////                adV.setVisibility(View.GONE);
+////                adV.destroy();
+//
+//                showGoogleBanner(ReplacementGoogleBanner);
+////                adView.setVisibility(View.GONE);
+////                adView.destroy();
+//
+//
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void onAdLoaded(Ad ad) {
+//                // Ad loaded callback
+////                showFacebookAds = true;
+////                ReplacementGoogleBanner.setVisibility(View.GONE);
+////                adV.setVisibility(View.VISIBLE);
+////                ReplacementGoogleBanner.destroy();
+//            }
+//
+//            @Override
+//            public void onAdClicked(Ad ad) {
+//                // Ad clicked callback
+//            }
+//
+//            @Override
+//            public void onLoggingImpression(Ad ad) {
+//                // Ad impression logged callback
+//            }
+//        };
+//        adV.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
+//    }
+//
+//
+//    public void loadGoogleInterestitialAd(){
 //        AdRequest adRequest = new AdRequest.Builder().build();
-//        adViewG.loadAd(adRequest);
-        return adViewG;
-
-    }
-
-    public void showGoogleBanner(com.google.android.gms.ads.AdView adViewG){
-        adViewG.loadAd(new AdRequest.Builder().build());
-//        boolean temp = false;
-//        if (adView!=null)
 //
-//        {
-////            adView.setVisibility(View.GONE);
-//            adView.destroy();
-//            showGoogleBanner(adViewGoogle1);
-//            temp = true;
-//        }
-//        if (adView2!=null)
-//        {
-//            adView2.destroy();
-//            showGoogleBanner(adViewGoogle2);
-//            temp = true;
-//        }
-//        if (adView3!=null)
-//        {
-//            adView3.destroy();
-//            showGoogleBanner(adViewGoogle3);
-//            temp = true;
-//        }
+//        com.google.android.gms.ads.interstitial.InterstitialAd.load(this,GoogleintadCode, adRequest, new InterstitialAdLoadCallback() {
+//            @Override
+//            public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
+////                super.onAdLoaded(interstitialAd);
+//                mInterstitialAd = interstitialAd;
+//                mInterstitialAd.show(MainActivity.this);
+//            }
 //
-//        if (temp){
-//            loadBannerAds();
-//        }
-
-    }
-
-    public AdView createFacebookBanner(String adCode, LinearLayout bannerBox){
-        AdView adViewF = new AdView(this, adCode, AdSize.BANNER_HEIGHT_50);
-//        adView.setId(cntt++);
-//        ((LinearLayout)findViewById(R.id.BannerBox)).addView(adViewF);
-        bannerBox.addView(adViewF);
-        return adViewF;
-
-    }
-
-    public void showFacebookBanner(AdView adV, com.google.android.gms.ads.AdView ReplacementGoogleBanner){
-        Log.d("adsStatus", String.valueOf(showFacebookAds));
-        AdListener adListener = new AdListener() {
-            @Override
-            public void onError(Ad ad, AdError adError) {
-                // Ad error callback
-//                Toast.makeText(
-//                        MainActivity.this,
-//                        "Error: " + adError.getErrorMessage(),
-//                        Toast.LENGTH_LONG)
-//                        .show();
-//                cntt = 0;
-//                AdView adView = new AdView(this);
-//
-//                adView.setAdSize(AdSize.BANNER);
-//                adView = new AdView(this, AdviewCode, AdSize.BANNER_HEIGHT_50);
-//                adView.setId(cntt++);
-//                ((LinearLayout)findViewById(R.id.BannerBox)).addView(adView);
-//                adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
-//                Banner1();
-                showFacebookAds = false;
-//                ReplacementGoogleBanner.setVisibility(View.VISIBLE);
-//                adV.setVisibility(View.GONE);
-//                adV.destroy();
-
-                showGoogleBanner(ReplacementGoogleBanner);
-//                adView.setVisibility(View.GONE);
-//                adView.destroy();
-
-
-
-
-
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                // Ad loaded callback
-//                showFacebookAds = true;
-//                ReplacementGoogleBanner.setVisibility(View.GONE);
-//                adV.setVisibility(View.VISIBLE);
-//                ReplacementGoogleBanner.destroy();
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-                // Ad clicked callback
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-                // Ad impression logged callback
-            }
-        };
-        adV.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
-    }
-
-
-    public void loadGoogleInterestitialAd(){
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        com.google.android.gms.ads.interstitial.InterstitialAd.load(this,GoogleintadCode, adRequest, new InterstitialAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
-//                super.onAdLoaded(interstitialAd);
-                mInterstitialAd = interstitialAd;
-                mInterstitialAd.show(MainActivity.this);
-            }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-//                super.onAdFailedToLoad(loadAdError);
-                mInterstitialAd = null;
-            }
-        });
-    }
-
-
+//            @Override
+//            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+////                super.onAdFailedToLoad(loadAdError);
+//                mInterstitialAd = null;
+//            }
+//        });
+//    }
 
 
 }
-//startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:"+getPackageName())));
