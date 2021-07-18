@@ -1502,13 +1502,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         vaccineInfoList.add(new vaccineInfoModel(sessionDate, centerName, centerAddress, VaccineName, String.valueOf(minAgeLimit), feeAmt, String.valueOf(dose1Quantity), String.valueOf(dose2Quantity)));
                     }
                 }
-
             }
             LinearLayout animationBox = (LinearLayout) findViewById(R.id.animationBox);
             TextView title = (TextView) findViewById(R.id.animTitle);
             TextView subTitle = (TextView) findViewById(R.id.animSubTitle);
             LottieAnimationView anim = (LottieAnimationView) findViewById(R.id.jsonAnim);
-            if (vaccineInfoList.size() <= 0) {
+            if (vaccineInfoList.size() <= 0 && updateDisplay) {
 
                 ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.GONE);
                 ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.GONE);
@@ -1518,7 +1517,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 anim.setAnimation(R.raw.not_found);
                 anim.playAnimation();
 //                anim.loop(true);
-            } else {
+            } else if (updateDisplay) {
                 ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.VISIBLE);
                 ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.GONE);
                 animationBox.setVisibility(View.GONE);
@@ -1539,13 +1538,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void findSlots(String urlLink) {
-        findSlots(urlLink, false);
+        findSlots(urlLink, false, true);
     }
 
-    private void findSlots(String urlLink, boolean pushNoti) {
+    private void findSlots(String urlLink, boolean pushNoti, boolean updateDisplay) {
 
-        ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.GONE);
-        ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.VISIBLE);
+        if (updateDisplay) {
+            ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.GONE);
+            ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.VISIBLE);
+        }
 
         closeKeyboard();
         LinearLayout slotInfo = (LinearLayout) findViewById(R.id.slotInfo);
@@ -1560,7 +1561,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     centerList = response.getJSONArray("centers");
                     Log.d("mycenters", response.getString("centers"));
 //                    Toast.makeText(getApplicationContext(), urlLink, Toast.LENGTH_SHORT).show();
-                    displaySlots(centerList, true, pushNoti);
+                    displaySlots(centerList, updateDisplay, pushNoti);
 
 
                 } catch (JSONException e) {
@@ -1673,13 +1674,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         EditText pinBox = (EditText) findViewById(R.id.pinBox);
                         String pincode = pinBox.getText().toString().trim();
                         if (notiToggleBtn) {
-                            findSlots("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + getDate(), true);
+                            findSlots("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + getDate(), true, false);
 //                            askForDonations += 1;
 //                            askForDonationFromUser();
                         }
                     } else {
                         if (notiToggleBtn) {
-                            findSlots(apiURL, true);
+                            findSlots(apiURL, true, false);
 //                            askForDonations += 1;
 //                            askForDonationFromUser();
                         }
