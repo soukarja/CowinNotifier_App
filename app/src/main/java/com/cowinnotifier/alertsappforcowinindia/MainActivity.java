@@ -82,6 +82,7 @@ import com.google.android.gms.ads.initialization.AdapterStatus;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -92,10 +93,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -111,6 +114,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private BottomNavigationView bottomNavigationView;
     private boolean searchMode = true;
     private boolean shownToday = false;
     private boolean notiToggleBtn = false;
@@ -131,9 +135,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean filterDose1 = true;
     private boolean filterDose2 = false;
     private boolean startedChecking = false;
+
+    private boolean day0 = true;
+    private boolean day1 = true;
+    private boolean day2 = true;
+    private boolean day3 = true;
+    private boolean day4 = true;
+    private boolean day5 = true;
+    private boolean day6 = true;
+    private boolean day7 = true;
+
+    String date1Txt, date2Txt, date3Txt, date4Txt, date5Txt, date6Txt, date7Txt;
+
     private int askForDonations = 0;
     JSONArray centerList;
     private long pressedTime;
+    private long adsTime;
     private boolean isPopupShowing = false;
     private AdView adView, adView2, adView3;
     //    private String AdviewCode, Adview2Code, Adview3Code, intadCode;
@@ -345,8 +362,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 filter18Plus = !filter18Plus;
                 setFilters();
-                if (!isAdsShown)
-                {
+                if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
                 }
@@ -358,8 +374,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 filter45Plus = !filter45Plus;
                 setFilters();
-                if (!isAdsShown)
-                {
+                if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
                 }
@@ -373,8 +388,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 filterCovisheild = !filterCovisheild;
                 setFilters();
-                if (!isAdsShown)
-                {
+                if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
                 }
@@ -388,8 +402,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 filterCovaxin = !filterCovaxin;
                 setFilters();
-                if (!isAdsShown)
-                {
+                if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
                 }
@@ -403,8 +416,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 filterSputnikV = !filterSputnikV;
                 setFilters();
-                if (!isAdsShown)
-                {
+                if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
                 }
@@ -428,8 +440,129 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 filterPaid = !filterPaid;
                 setFilters();
-                if (!isAdsShown)
-                {
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
+            }
+        });
+
+        TextView day0Btn = (TextView) findViewById(R.id.date0);
+        day0Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day0 = !day0;
+                setFilters();
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
+            }
+        });
+        TextView day1Btn = (TextView) findViewById(R.id.date1);
+        date1Txt = getDate();
+        day1Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day1 = !day1;
+                day0 = false;
+                setFilters();
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
+            }
+        });
+
+        TextView day2Btn = (TextView) findViewById(R.id.date2);
+        date2Txt = getWeekDates(1);
+        day2Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day2 = !day2;
+                day0 = false;
+                setFilters();
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
+            }
+        });
+
+        TextView day3Btn = (TextView) findViewById(R.id.date3);
+        date3Txt = getWeekDates(2);
+        day3Btn.setText(date3Txt);
+        day3Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day3 = !day3;
+                day0 = false;
+                setFilters();
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
+            }
+        });
+
+        TextView day4Btn = (TextView) findViewById(R.id.date4);
+        date4Txt = getWeekDates(3);
+        day4Btn.setText(date4Txt);
+        day4Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day4 = !day4;
+                day0 = false;
+                setFilters();
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
+            }
+        });
+
+        TextView day5Btn = (TextView) findViewById(R.id.date5);
+        date5Txt = getWeekDates(4);
+        day5Btn.setText(date5Txt);
+        day5Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day5 = !day5;
+                day0 = false;
+                setFilters();
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
+            }
+        });
+
+        TextView day6Btn = (TextView) findViewById(R.id.date6);
+        date6Txt = getWeekDates(5);
+        day6Btn.setText(date6Txt);
+        day6Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day6 = !day6;
+                day0 = false;
+                setFilters();
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
+            }
+        });
+
+        TextView day7Btn = (TextView) findViewById(R.id.date7);
+        date7Txt = getWeekDates(6);
+        day7Btn.setText(date7Txt);
+        day7Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day7 = !day7;
+                day0 = false;
+                setFilters();
+                if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
                 }
@@ -561,9 +694,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.bottomActiveCases:
+                        startActivity(new Intent(MainActivity.this, activeCasesActivity.class));
+                        break;
+                    case R.id.bottomLatestUpdates:
+                        startActivity(new Intent(MainActivity.this, latestUpdatesActivity.class));
+                        break;
+                }
+                return true;
+            }
+        });
+
     }
 
     private void setFilters() {
+
+        ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.GONE);
+        ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.VISIBLE);
+
         TextView filterBtn = (TextView) findViewById(R.id.filter18plus);
         if (filter18Plus) {
 //            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
@@ -710,6 +863,192 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 filterBtn.setTextColor(getResources().getColor(R.color.black));
             }
         }
+
+        filterBtn = (TextView) findViewById(R.id.date0);
+        if (day0) {
+            day1 = false;
+            day2 = false;
+            day3 = false;
+            day4 = false;
+            day5 = false;
+            day6 = false;
+            day7 = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
+        } else {
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+            filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+
+        }
+
+
+        filterBtn = (TextView) findViewById(R.id.date1);
+        if (day1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
+        } else {
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+            filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+
+        }
+
+        filterBtn = (TextView) findViewById(R.id.date2);
+        if (day2) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
+        } else {
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+            filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+
+        }
+
+        filterBtn = (TextView) findViewById(R.id.date3);
+        if (day3) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
+        } else {
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+            filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+
+        }
+
+        filterBtn = (TextView) findViewById(R.id.date4);
+        if (day4) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
+        } else {
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+            filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+
+        }
+
+        filterBtn = (TextView) findViewById(R.id.date5);
+        if (day5) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
+        } else {
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+            filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+
+        }
+
+        filterBtn = (TextView) findViewById(R.id.date6);
+        if (day6) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
+        } else {
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+            filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+
+        }
+
+        filterBtn = (TextView) findViewById(R.id.date7);
+        if (day7) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
+                filterBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
+            }
+
+        } else {
+//            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+            filterBtn.setTextColor(getResources().getColor(R.color.black));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                filterBtn.getBackground().setTint(getResources().getColor(R.color.lightgrey));
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                filterBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+
+        }
+
+
         CheckBox doseBtn = (CheckBox) findViewById(R.id.filterDose1Btn);
         doseBtn.setChecked(filterDose1);
         doseBtn = (CheckBox) findViewById(R.id.filterDose2Btn);
@@ -980,9 +1319,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displaySlots(JSONArray centerList, boolean updateDisplay, boolean pushNotification) {
+        if (updateDisplay) {
+            ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.GONE);
+            ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.VISIBLE);
+        }
         noti_count = 0;
 //        Toast.makeText(getApplicationContext(), String.valueOf(centerList.length()), Toast.LENGTH_SHORT).show();
         vaccineInfoList = new ArrayList<>();
+        ArrayList<String> availableDates = new ArrayList<>();
 
         boolean PVTfilter18Plus = filter18Plus;
         boolean PVTfilter45Plus = filter45Plus;
@@ -993,6 +1337,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean PVTfilterPaid = filterPaid;
         boolean PVTfilterDose1 = filterDose1;
         boolean PVTfilterDose2 = filterDose2;
+
+        boolean PVTday0 = day0;
+        boolean PVTday1 = day1;
+        boolean PVTday2 = day2;
+        boolean PVTday3 = day3;
+        boolean PVTday4 = day4;
+        boolean PVTday5 = day5;
+        boolean PVTday6 = day6;
+        boolean PVTday7 = day7;
+
+        if (PVTday0) {
+            PVTday1 = true;
+            PVTday2 = true;
+            PVTday3 = true;
+            PVTday4 = true;
+            PVTday5 = true;
+            PVTday6 = true;
+            PVTday7 = true;
+        }
+
+        if (PVTday1) {
+            availableDates.add(date1Txt);
+        }
+        if (PVTday2) {
+            availableDates.add(date2Txt);
+        }
+        if (PVTday3) {
+            availableDates.add(date3Txt);
+        }
+        if (PVTday4) {
+            availableDates.add(date4Txt);
+        }
+        if (PVTday5) {
+            availableDates.add(date5Txt);
+        }
+        if (PVTday6) {
+            availableDates.add(date6Txt);
+        }
+        if (PVTday7) {
+            availableDates.add(date7Txt);
+        }
 
 //        Vector<String> filterList = new Vector<>();
 
@@ -1020,6 +1405,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         try {
+            Log.d("demo", centerList.toString());
             for (int i = 0; centerList != null && i < centerList.length(); i++) {
                 Log.d("mycenter", "Loop Working " + String.valueOf(i));
                 JSONObject centerInfo = centerList.getJSONObject(i);
@@ -1029,9 +1415,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 int centerID = centerInfo.getInt("center_id");
                 String centerAddress = centerInfo.getString("address");
                 String centerPincode = String.valueOf(centerInfo.getInt("pincode"));
+
+
 //                        districts.add(stateInfo.getString("district_name"));
 
                 for (int j = 0; j < centerSessions.length(); j++) {
+                    String feeAmt = feeType;
                     Log.d("mycenter", "Loop2 Working " + String.valueOf(j));
                     JSONObject currentSession = centerSessions.getJSONObject(j);
                     String sessionDate = currentSession.getString("date");
@@ -1039,6 +1428,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     String VaccineName = currentSession.getString("vaccine");
                     int dose1Quantity = currentSession.getInt("available_capacity_dose1");
                     int dose2Quantity = currentSession.getInt("available_capacity_dose2");
+
+                    if (!PVTday0) {
+                        if (!availableDates.contains(sessionDate))
+                            continue;
+                    }
+
+                    if (feeType.toLowerCase().equals("paid")) {
+                        JSONArray vaccineFees = centerInfo.getJSONArray("vaccine_fees");
+                        for (int k = 0; k < vaccineFees.length(); k++) {
+                            JSONObject fee = vaccineFees.getJSONObject(k);
+                            String vN = fee.getString("vaccine");
+                            String amt = fee.getString("fee");
+
+                            if (vN.trim().toLowerCase().equals(VaccineName.trim().toLowerCase())) {
+                                feeAmt = "Rs. " + amt;
+                                break;
+                            }
+                        }
+                    }
 
                     if (dose1Quantity + dose2Quantity <= 0) {
                         continue;
@@ -1091,7 +1499,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
 
                     if (updateDisplay) {
-                        vaccineInfoList.add(new vaccineInfoModel(sessionDate, centerName, centerAddress, VaccineName, String.valueOf(minAgeLimit), feeType, String.valueOf(dose1Quantity), String.valueOf(dose2Quantity)));
+                        vaccineInfoList.add(new vaccineInfoModel(sessionDate, centerName, centerAddress, VaccineName, String.valueOf(minAgeLimit), feeAmt, String.valueOf(dose1Quantity), String.valueOf(dose2Quantity)));
                     }
                 }
 
@@ -1102,7 +1510,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LottieAnimationView anim = (LottieAnimationView) findViewById(R.id.jsonAnim);
             if (vaccineInfoList.size() <= 0) {
 
-
+                ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.GONE);
+                ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.GONE);
                 animationBox.setVisibility(View.VISIBLE);
                 title.setText(errorTitles[1]);
                 subTitle.setText(errorSubTitles[1]);
@@ -1110,6 +1519,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 anim.playAnimation();
 //                anim.loop(true);
             } else {
+                ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.VISIBLE);
+                ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.GONE);
                 animationBox.setVisibility(View.GONE);
             }
             if (updateDisplay) {
@@ -1132,6 +1543,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void findSlots(String urlLink, boolean pushNoti) {
+
+        ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.GONE);
+        ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.VISIBLE);
 
         closeKeyboard();
         LinearLayout slotInfo = (LinearLayout) findViewById(R.id.slotInfo);
@@ -1171,6 +1585,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 //        return dtf.format(now);
         return date;
+    }
+
+    private String getWeekDates(int dayDiff) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.add(Calendar.DAY_OF_YEAR, dayDiff);
+        Date newDate = calendar.getTime();
+
+        return new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(newDate);
     }
 
 
@@ -1235,7 +1658,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+
     private int noti_count = 0;
+
     public void startChecking() {
         noti_count = 0;
         if (!startedChecking && notiToggleBtn) {
@@ -1345,7 +1770,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             startActivity(homeIntent);
                         }
                     })
-                    .setNeutralButton("Rate Us", new DialogInterface.OnClickListener() {
+                    .setNeutralButton("Rate App", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String appurl = "https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
@@ -1364,6 +1789,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void loadBannerAds() {
+
+        if (adsTime + 10000 > System.currentTimeMillis()) {
+            return;
+        }
+        adsTime = System.currentTimeMillis();
 
         if (adView == null)
             adView = ads.createFacebookBanner(ads.FacebookBanner1, (LinearLayout) findViewById(R.id.bannerAd1));
@@ -1427,7 +1857,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://cowinnotifier.site")));
                 break;
             case R.id.privacyPolicyBtn:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://cowinnotifier.site/privacy-policy.php")));
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse()));
+                Intent intent = new Intent(getApplicationContext(), inbuiltWebviewActivity.class);
+                intent.putExtra("link", "https://cowinnotifier.site/privacy-policy.php");
+                intent.putExtra("header", "Privacy Policy");
+                startActivity(intent);
+                break;
+            case R.id.drawerActiveCases:
+                startActivity(new Intent(MainActivity.this, activeCasesActivity.class));
+                break;
+            case R.id.drawerLatestUpdates:
+                startActivity(new Intent(MainActivity.this, latestUpdatesActivity.class));
                 break;
 
         }
@@ -1557,219 +1997,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    }
 
 
-//    public void loadInterstitial() {
-//
-//        intad = new InterstitialAd(this, FBintadCode);
-//
-//        // loading Ad
-//        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
-//
-//            @Override
-//
-//            public void onInterstitialDisplayed(Ad ad) {
-//
-//                // Showing Toast Message
-//
-////                Toast.makeText(MainActivity.this, "onInterstitialDisplayed", Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//            @Override
-//
-//            public void onInterstitialDismissed(Ad ad) {
-//
-//                // Showing Toast Message
-//
-////                Toast.makeText(MainActivity.this, "onInterstitialDismissed", Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//            @Override
-//
-//            public void onError(Ad ad, AdError adError) {
-//
-//                // Showing Toast Message
-//
-////                Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_SHORT).show();
-//                loadGoogleInterestitialAd();
-//
-//            }
-//
-//            @Override
-//
-//            public void onAdLoaded(Ad ad) {
-//
-//                // Showing Toast Message
-//
-////                Toast.makeText(MainActivity.this, "onAdLoaded", Toast.LENGTH_SHORT).show();
-//                intad.show();
-//
-//            }
-//
-//            @Override
-//
-//            public void onAdClicked(Ad ad) {
-//
-//                // Showing Toast Message
-//
-////                Toast.makeText(MainActivity.this, "onAdClicked", Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//            @Override
-//
-//            public void onLoggingImpression(Ad ad) {
-//
-//                // Showing Toast Message
-//
-////                Toast.makeText(MainActivity.this, "onLoggingImpression", Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//        };
-//
-//
-////        intad.loadAd();
-//        intad.loadAd(
-//                intad.buildLoadAdConfig()
-//                        .withAdListener(interstitialAdListener)
-//                        .build());
-//    }
-//
-//
-//    public com.google.android.gms.ads.AdView createGoogleBanner(String adCode, LinearLayout bannerBox){
-//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-//            @Override
-//            public void onInitializationComplete(InitializationStatus initializationStatus) {
-//            }
-//        });
-//        com.google.android.gms.ads.AdView adViewG = new com.google.android.gms.ads.AdView(this);
-//        adViewG.setAdSize(com.google.android.gms.ads.AdSize.BANNER);
-////        adViewG.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
-//        adViewG.setAdUnitId(adCode);
-////        ((LinearLayout)findViewById(R.id.BannerBox)).addView(adViewG);
-//        bannerBox.addView(adViewG);
-////        AdRequest adRequest = new AdRequest.Builder().build();
-////        adViewG.loadAd(adRequest);
-//        return adViewG;
-//
-//    }
-//
-//    public void showGoogleBanner(com.google.android.gms.ads.AdView adViewG){
-//        adViewG.loadAd(new AdRequest.Builder().build());
-////        boolean temp = false;
-////        if (adView!=null)
-////
-////        {
-//////            adView.setVisibility(View.GONE);
-////            adView.destroy();
-////            showGoogleBanner(adViewGoogle1);
-////            temp = true;
-////        }
-////        if (adView2!=null)
-////        {
-////            adView2.destroy();
-////            showGoogleBanner(adViewGoogle2);
-////            temp = true;
-////        }
-////        if (adView3!=null)
-////        {
-////            adView3.destroy();
-////            showGoogleBanner(adViewGoogle3);
-////            temp = true;
-////        }
-////
-////        if (temp){
-////            loadBannerAds();
-////        }
-//
-//    }
-//
-//    public AdView createFacebookBanner(String adCode, LinearLayout bannerBox){
-//        AdView adViewF = new AdView(this, adCode, AdSize.BANNER_HEIGHT_50);
-////        adView.setId(cntt++);
-////        ((LinearLayout)findViewById(R.id.BannerBox)).addView(adViewF);
-//        bannerBox.addView(adViewF);
-//        return adViewF;
-//
-//    }
-//
-//    public void showFacebookBanner(AdView adV, com.google.android.gms.ads.AdView ReplacementGoogleBanner){
-//        Log.d("adsStatus", String.valueOf(showFacebookAds));
-//        AdListener adListener = new AdListener() {
-//            @Override
-//            public void onError(Ad ad, AdError adError) {
-//                // Ad error callback
-////                Toast.makeText(
-////                        MainActivity.this,
-////                        "Error: " + adError.getErrorMessage(),
-////                        Toast.LENGTH_LONG)
-////                        .show();
-////                cntt = 0;
-////                AdView adView = new AdView(this);
-////
-////                adView.setAdSize(AdSize.BANNER);
-////                adView = new AdView(this, AdviewCode, AdSize.BANNER_HEIGHT_50);
-////                adView.setId(cntt++);
-////                ((LinearLayout)findViewById(R.id.BannerBox)).addView(adView);
-////                adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
-////                Banner1();
-//                showFacebookAds = false;
-////                ReplacementGoogleBanner.setVisibility(View.VISIBLE);
-////                adV.setVisibility(View.GONE);
-////                adV.destroy();
-//
-//                showGoogleBanner(ReplacementGoogleBanner);
-////                adView.setVisibility(View.GONE);
-////                adView.destroy();
-//
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onAdLoaded(Ad ad) {
-//                // Ad loaded callback
-////                showFacebookAds = true;
-////                ReplacementGoogleBanner.setVisibility(View.GONE);
-////                adV.setVisibility(View.VISIBLE);
-////                ReplacementGoogleBanner.destroy();
-//            }
-//
-//            @Override
-//            public void onAdClicked(Ad ad) {
-//                // Ad clicked callback
-//            }
-//
-//            @Override
-//            public void onLoggingImpression(Ad ad) {
-//                // Ad impression logged callback
-//            }
-//        };
-//        adV.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
-//    }
-//
-//
-//    public void loadGoogleInterestitialAd(){
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//
-//        com.google.android.gms.ads.interstitial.InterstitialAd.load(this,GoogleintadCode, adRequest, new InterstitialAdLoadCallback() {
-//            @Override
-//            public void onAdLoaded(@NonNull com.google.android.gms.ads.interstitial.InterstitialAd interstitialAd) {
-////                super.onAdLoaded(interstitialAd);
-//                mInterstitialAd = interstitialAd;
-//                mInterstitialAd.show(MainActivity.this);
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-////                super.onAdFailedToLoad(loadAdError);
-//                mInterstitialAd = null;
-//            }
-//        });
-//    }
 
 
 }

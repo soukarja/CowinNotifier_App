@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-<!--        <item-->
-<!--            android:id="@+id/homeBtn"-->
-<!--            android:title="Find Vaccine Slots"-->
-<!--            android:icon="@drawable/home_icon"/>-->
+        <!--        <item-->
+        <!--            android:id="@+id/homeBtn"-->
+        <!--            android:title="Find Vaccine Slots"-->
+        <!--            android:icon="@drawable/home_icon"/>-->
+
+        <item
+            android:id="@+id/drawerActiveCases"
+            android:icon="@raw/graph"
+            android:title="Covid Stats" />
+        <item
+            android:id="@+id/drawerLatestUpdates"
+            android:icon="@raw/newspaper"
+            android:title="Latest Updates" />
 
         <item
             android:id="@+id/rateUsOnPlaystore"
-            android:title="Rate us on Playstore"
-            android:icon="@drawable/star_icon" />
+            android:icon="@drawable/star_icon"
+            android:title="Rate App on Playstore" />
 
         <item
             android:id="@+id/shareBtn"
-            android:title="Share App with Friends"
-            android:icon="@drawable/share_icon" />
+            android:icon="@drawable/share_icon"
+            android:title="Share App with Friends" />
 
         <item
             android:id="@+id/abousUsBtn"
-            android:title="About Us"
-            android:icon="@drawable/info_icon" />
+            android:icon="@drawable/info_icon"
+            android:title="About Us" />
 
-<!--        <item-->
-<!--            android:id="@+id/donateBtn"-->
-<!--            android:title="Donate"-->
-<!--            android:icon="@drawable/money_icon" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/donateBtn"-->
+        <!--            android:title="Donate"-->
+        <!--            android:icon="@drawable/money_icon" />-->
         <item
             android:id="@+id/privacyPolicyBtn"
-            android:title="Privacy Policy"
-            android:icon="@drawable/privacy_policy_icon" />
+            android:icon="@drawable/privacy_policy_icon"
+            android:title="Privacy Policy" />
 
     </group>
 

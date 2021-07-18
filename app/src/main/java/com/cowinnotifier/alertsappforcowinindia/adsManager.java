@@ -79,6 +79,7 @@ public class adsManager {
         this.sp = context.getSharedPreferences(this.SHARED_PREF, Context.MODE_PRIVATE);
         this.ed = sp.edit();
 
+        testMode = true; //rollout
 //        testMode = true; // debug
 
         if (testMode) {
