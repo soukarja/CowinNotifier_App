@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/topImage"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"
+        android:src="@raw/applogo"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:text="Hello"
+        android:textColor="@color/green"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginTop="20dp"
+        android:id="@+id/headLine"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/topImage"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:text="There"
+        android:textColor="@color/darkgreen"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/subLine"
+        android:layout_below="@id/headLine"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="There"
+        android:textColor="@color/darkgreen"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/content"
+        android:layout_below="@id/subLine"/>
+
+</RelativeLayout>

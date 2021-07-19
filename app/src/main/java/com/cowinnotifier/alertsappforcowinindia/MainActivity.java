@@ -92,6 +92,7 @@ import com.onesignal.OneSignal;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
@@ -361,7 +362,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 filter18Plus = !filter18Plus;
-                setFilters();
+                setFilter18PlusFilter();
+                SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+                ed.putBoolean("filter18Plus", filter18Plus);
+                ed.apply();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -373,7 +384,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 filter45Plus = !filter45Plus;
-                setFilters();
+                setFilter45PlusFilter();
+                SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+                ed.putBoolean("filter45Plus", filter45Plus);
+                ed.apply();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -387,7 +407,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 filterCovisheild = !filterCovisheild;
-                setFilters();
+                setFilterCovisheild();
+                SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+
+                ed.putBoolean("filterCovisheild", filterCovisheild);
+                ed.apply();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -401,7 +431,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 filterCovaxin = !filterCovaxin;
-                setFilters();
+                setFilterCovaxin();
+                SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+
+                ed.putBoolean("filterCovaxin", filterCovaxin);
+                ed.apply();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -415,7 +455,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 filterSputnikV = !filterSputnikV;
-                setFilters();
+                setFilterSputnikV();
+                SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+                ed.putBoolean("filterSputnikV", filterSputnikV);
+
+                ed.apply();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -429,7 +479,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 filterFree = !filterFree;
-                setFilters();
+                setFilterFree();
+                SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+                ed.putBoolean("filterFree", filterFree);
+
+                ed.apply();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
             }
         });
 
@@ -439,7 +503,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 filterPaid = !filterPaid;
-                setFilters();
+                setFilterPaid();
+                SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+                ed.putBoolean("filterPaid", filterPaid);
+
+                ed.apply();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -452,7 +526,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 day0 = !day0;
-                setFilters();
+                setDay0();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -466,7 +545,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 day1 = !day1;
                 day0 = false;
-                setFilters();
+                setDay1();
+                setDay0();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -481,7 +566,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 day2 = !day2;
                 day0 = false;
-                setFilters();
+                setDay2();
+                setDay0();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -497,7 +588,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 day3 = !day3;
                 day0 = false;
-                setFilters();
+                setDay3();
+                setDay0();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -513,7 +610,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 day4 = !day4;
                 day0 = false;
-                setFilters();
+                setDay4();
+                setDay0();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -529,7 +632,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 day5 = !day5;
                 day0 = false;
-                setFilters();
+                setDay5();
+                setDay0();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -545,7 +654,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 day6 = !day6;
                 day0 = false;
-                setFilters();
+                setDay6();
+                setDay0();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -561,7 +676,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 day7 = !day7;
                 day0 = false;
-                setFilters();
+                setDay7();
+                setDay0();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
                 if (!isAdsShown) {
                     isAdsShown = true;
                     ads.showInterstitialAds();
@@ -601,14 +722,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 filterDose1 = !filterDose1;
-                setFilters();
+                setFilterDose1();
+                SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+                ed.putBoolean("filterDose1", filterDose1);
+
+                ed.apply();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
             }
         });
         dose2Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filterDose2 = !filterDose2;
-                setFilters();
+                setFilterDose2();
+                SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+                ed.putBoolean("filterDose2", filterDose2);
+
+                ed.apply();
+
+                if (centerList != null) {
+                    displaySlots(centerList, true);
+                }
+
+                if (!isAdsShown) {
+                    isAdsShown = true;
+                    ads.showInterstitialAds();
+                }
             }
         });
 
@@ -698,7 +847,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.bottomActiveCases:
                         startActivity(new Intent(MainActivity.this, activeCasesActivity.class));
                         break;
@@ -712,11 +861,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void setFilters() {
-
-        ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.GONE);
-        ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.VISIBLE);
-
+    private void setFilter18PlusFilter() {
         TextView filterBtn = (TextView) findViewById(R.id.filter18plus);
         if (filter18Plus) {
 //            filterBtn.setBackgroundColor(getResources().getColor(R.color.darkgreen));
@@ -738,8 +883,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 filterBtn.setTextColor(getResources().getColor(R.color.black));
             }
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.filter45plus);
+    private void setFilter45PlusFilter() {
+
+        TextView filterBtn = (TextView) findViewById(R.id.filter45plus);
         if (filter45Plus) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -759,8 +907,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 filterBtn.setTextColor(getResources().getColor(R.color.black));
             }
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.filterCovishield);
+    private void setFilterCovisheild() {
+        TextView filterBtn = (TextView) findViewById(R.id.filterCovishield);
         if (filterCovisheild) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -780,8 +930,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 filterBtn.setTextColor(getResources().getColor(R.color.black));
             }
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.filterCovaxin);
+    private void setFilterCovaxin() {
+        TextView filterBtn = (TextView) findViewById(R.id.filterCovaxin);
         if (filterCovaxin) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -801,8 +953,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 filterBtn.setTextColor(getResources().getColor(R.color.black));
             }
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.filterSputnikV);
+    private void setFilterSputnikV() {
+        TextView filterBtn = (TextView) findViewById(R.id.filterSputnikV);
         if (filterSputnikV) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -822,7 +976,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 filterBtn.setTextColor(getResources().getColor(R.color.black));
             }
         }
-        filterBtn = (TextView) findViewById(R.id.filterFree);
+    }
+
+    private void setFilterFree() {
+        TextView filterBtn = (TextView) findViewById(R.id.filterFree);
         if (filterFree) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -842,8 +999,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 filterBtn.setTextColor(getResources().getColor(R.color.black));
             }
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.filterPaid);
+    private void setFilterPaid() {
+        TextView filterBtn = (TextView) findViewById(R.id.filterPaid);
         if (filterPaid) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -863,8 +1022,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 filterBtn.setTextColor(getResources().getColor(R.color.black));
             }
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.date0);
+    private void setDay0() {
+        TextView filterBtn = (TextView) findViewById(R.id.date0);
         if (day0) {
             day1 = false;
             day2 = false;
@@ -879,6 +1040,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else {
                 filterBtn.setTextColor(getResources().getColor(R.color.darkgreen));
             }
+            setDay1();
+            setDay2();
+            setDay3();
+            setDay4();
+            setDay5();
+            setDay6();
+            setDay7();
 
         } else {
 //            filterBtn.setBackgroundColor(getResources().getColor(R.color.lightgrey));
@@ -892,9 +1060,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+    }
 
-
-        filterBtn = (TextView) findViewById(R.id.date1);
+    private void setDay1() {
+        TextView filterBtn = (TextView) findViewById(R.id.date1);
         if (day1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -915,8 +1084,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.date2);
+    private void setDay2() {
+        TextView filterBtn = (TextView) findViewById(R.id.date2);
         if (day2) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -937,8 +1108,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.date3);
+    private void setDay3() {
+        TextView filterBtn = (TextView) findViewById(R.id.date3);
         if (day3) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -959,8 +1132,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.date4);
+    private void setDay4(){
+        TextView filterBtn = (TextView) findViewById(R.id.date4);
         if (day4) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -981,8 +1156,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.date5);
+    private void setDay5(){
+        TextView filterBtn = (TextView) findViewById(R.id.date5);
         if (day5) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -1003,8 +1180,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.date6);
+    private void setDay6(){
+        TextView filterBtn = (TextView) findViewById(R.id.date6);
         if (day6) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -1025,8 +1204,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+    }
 
-        filterBtn = (TextView) findViewById(R.id.date7);
+    private void setDay7(){
+        TextView filterBtn = (TextView) findViewById(R.id.date7);
         if (day7) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 filterBtn.getBackground().setTint(getResources().getColor(R.color.darkgreen));
@@ -1047,12 +1228,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+    }
 
-
+    private void setFilterDose1(){
         CheckBox doseBtn = (CheckBox) findViewById(R.id.filterDose1Btn);
         doseBtn.setChecked(filterDose1);
-        doseBtn = (CheckBox) findViewById(R.id.filterDose2Btn);
+
+    }
+
+    private void setFilterDose2(){
+        CheckBox doseBtn = (CheckBox) findViewById(R.id.filterDose2Btn);
         doseBtn.setChecked(filterDose2);
+    }
+
+    private void setFilters() {
+
+        ((RecyclerView) findViewById(R.id.availableVaccineCenters)).setVisibility(View.GONE);
+        ((LottieAnimationView) findViewById(R.id.listLoading)).setVisibility(View.VISIBLE);
+
+        setFilter18PlusFilter();
+        setFilter45PlusFilter();
+
+
+        setFilterCovisheild();
+        setFilterCovaxin();
+        setFilterSputnikV();
+
+        setFilterFree();
+        setFilterPaid();
+
+
+        setDay0();
+        setDay1();
+        setDay2();
+        setDay3();
+        setDay4();
+        setDay5();
+        setDay6();
+        setDay7();
+
+
+        setFilterDose1();
+        setFilterDose2();
 
 
         SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
@@ -1385,7 +1602,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             PVTfilter18Plus = true;
             PVTfilter45Plus = true;
         }
-        if (PVTfilter45Plus) {
+        if (PVTfilter18Plus) {
             PVTfilter18Plus = true;
         }
         if (!PVTfilterDose1 && !PVTfilterDose2) {
@@ -1996,8 +2213,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            }
 //        });
 //    }
-
-
 
 
 }

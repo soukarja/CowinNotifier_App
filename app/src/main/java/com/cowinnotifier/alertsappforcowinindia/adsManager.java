@@ -42,7 +42,8 @@ import java.util.concurrent.Callable;
 
 public class adsManager {
 
-    private int maxAdClicksPerDay = 3;
+    private int maxGoogleAdClicksPerDay = 2;
+    private int maxFBAdClicksPerDay = 3;
     private int maxCTRPerDay = 30;
     private String ONESIGNAL_APP_ID;
 
@@ -79,7 +80,7 @@ public class adsManager {
         this.sp = context.getSharedPreferences(this.SHARED_PREF, Context.MODE_PRIVATE);
         this.ed = sp.edit();
 
-        testMode = true; //rollout
+        testMode = false; //rollout
 //        testMode = true; // debug
 
         if (testMode) {
@@ -582,12 +583,12 @@ public class adsManager {
         if (clicks + impressions <= 0)
             return true;
 
-        int calcCTR = (int) Math.ceil((clicks * 100) / impressions);
+//        int calcCTR = (int) Math.ceil((clicks * 100) / impressions);
+//
+//        if (calcCTR >= this.maxCTRPerDay && impressions > 3)
+//            return false;
 
-        if (calcCTR >= this.maxCTRPerDay && impressions > 3)
-            return false;
-
-        if (clicks >= this.maxAdClicksPerDay)
+        if (clicks >= this.maxFBAdClicksPerDay)
             return false;
 
 
@@ -603,12 +604,12 @@ public class adsManager {
         if (clicks + impressions <= 0)
             return true;
 
-        int calcCTR = (int) Math.ceil((clicks * 100) / impressions);
+//        int calcCTR = (int) Math.ceil((clicks * 100) / impressions);
+//
+//        if (calcCTR >= this.maxCTRPerDay && impressions > 3)
+//            return false;
 
-        if (calcCTR >= this.maxCTRPerDay && impressions > 3)
-            return false;
-
-        if (clicks >= this.maxAdClicksPerDay)
+        if (clicks >= this.maxGoogleAdClicksPerDay)
             return false;
 
 

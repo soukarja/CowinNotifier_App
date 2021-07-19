@@ -18,4 +18,6 @@
     <color name="red">#FF1744</color>
     <color name="darkgreen">#005913</color>
     <color name="blue">#005FFF</color>
+    <color name="lightWhite">#cccccc</color>
+    <color name="darkGrey">#8F8F8F</color>
 </resources>

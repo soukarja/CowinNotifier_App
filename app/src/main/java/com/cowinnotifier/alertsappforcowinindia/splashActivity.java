@@ -3,7 +3,9 @@ package com.cowinnotifier.alertsappforcowinindia;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -14,58 +16,36 @@ import com.airbnb.lottie.LottieAnimationView;
 public class splashActivity extends AppCompatActivity {
 
     private Intent intent;
-    private LottieAnimationView anim;
     private boolean ready = false;
+
+    private String SHARED_PREF = "splashScreen";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         hideSystemUI();
 
-        intent = new Intent(this, MainActivity.class);
-//        anim = (LottieAnimationView) findViewById(R.id.splashAnim);
+        SharedPreferences sp = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
 
-//        anim.addAnimatorListener(new Animator.AnimatorListener() {
-//            @Override
-//            public void onAnimationStart(Animator animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                if (ready) {
-//                    startActivity(intent);
-//                    finish();
-//                }
-//                else {
-//                    ready = true;
-//                }
-//            }
-//
-//            @Override
-//            public void onAnimationCancel(Animator animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animator animation) {
-//
-//            }
-//        });
+        if (sp.getBoolean("firstTime", true)) {
+            SharedPreferences.Editor ed = sp.edit();
+            ed.putBoolean("firstTime", false);
+            ed.apply();
+            intent = new Intent(this, onBoardingActivity.class);
+        }
+        else {
+            intent = new Intent(this, MainActivity.class);
+        }
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ready = true;
-                if (ready) {
-                    startActivity(intent);
-                    finish();
-                }
-                else {
-                    ready = true;
-                }
+                startActivity(intent);
+                finish();
             }
-        }, 500);
+        }, 1000);
     }
 
 
