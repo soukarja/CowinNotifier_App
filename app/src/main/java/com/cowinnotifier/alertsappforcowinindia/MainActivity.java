@@ -181,8 +181,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     RecyclerView recyclerViewVaccineInfo;
     LinearLayoutManager layoutManager;
-    List<vaccineInfoModel> vaccineInfoList;
+    private List<vaccineInfoModel> vaccineInfoList;
     vaccineInfoAdapter adapter;
+
+    private int loadPerCall = 10;
+    private int currentLoaded = 0;
 
     //    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -830,6 +833,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         fab.setVisibility(View.VISIBLE);
                     } else {
                         fab.setVisibility(View.GONE);
+                    }
+
+                    if (!sc.canScrollVertically(1) && vaccineInfoList.size() > 0 && vaccineInfoList.size() > currentLoaded)
+                    {
+
+                        currentLoaded = Math.min(vaccineInfoList.size(), currentLoaded+loadPerCall);
+                        List<vaccineInfoModel> tempModel = new ArrayList<>();
+                        for (int kj=0; kj<currentLoaded; kj++)
+                        {
+                            tempModel.add(vaccineInfoList.get(kj));
+                        }
+                        recyclerViewVaccineInfo = findViewById(R.id.availableVaccineCenters);
+                        recyclerViewVaccineInfo.setLayoutManager(layoutManager);
+                        adapter = new vaccineInfoAdapter(tempModel);
+                        recyclerViewVaccineInfo.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     }
                 }
             });
@@ -1740,11 +1759,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 animationBox.setVisibility(View.GONE);
             }
             if (updateDisplay) {
+                String tempTxt = "";
+                if (vaccineInfoList.size() <= 0)
+                    tempTxt = "No Centers Found";
+                else if (vaccineInfoList.size() == 1)
+                    tempTxt = "1 Center Found";
+                else
+                    tempTxt = String.valueOf(vaccineInfoList.size()) + " Centers Found";
+
+                ((TextView)findViewById(R.id.noOfCenters)).setText(tempTxt);
+                currentLoaded = Math.min(vaccineInfoList.size(), loadPerCall);
+                List<vaccineInfoModel> tempModel = new ArrayList<>();
+                for (int kj=0; kj<currentLoaded; kj++)
+                {
+                    tempModel.add(vaccineInfoList.get(kj));
+                }
                 recyclerViewVaccineInfo = findViewById(R.id.availableVaccineCenters);
                 layoutManager = new LinearLayoutManager(this);
                 layoutManager.setOrientation(RecyclerView.VERTICAL);
                 recyclerViewVaccineInfo.setLayoutManager(layoutManager);
-                adapter = new vaccineInfoAdapter(vaccineInfoList);
+                adapter = new vaccineInfoAdapter(tempModel);
                 recyclerViewVaccineInfo.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }

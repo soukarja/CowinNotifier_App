@@ -37,7 +37,7 @@ public class splashActivity extends AppCompatActivity {
         else {
             intent = new Intent(this, MainActivity.class);
         }
-
+//        intent = new Intent(this, onBoardingActivity.class); //debug
 
         new Handler().postDelayed(new Runnable() {
             @Override

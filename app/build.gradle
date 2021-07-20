@@ -10,8 +10,8 @@ android {
         applicationId "com.cowinnotifier.alertsappforcowinindia"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 8
-        versionName "1.42"
+        versionCode 9
+        versionName "1.43"
 
         multiDexEnabled true
 

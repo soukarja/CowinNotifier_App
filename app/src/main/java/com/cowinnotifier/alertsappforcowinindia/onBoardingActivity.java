@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -111,10 +113,20 @@ public class onBoardingActivity extends AppCompatActivity {
             {
                 prevBtn.setVisibility(View.GONE);
             }
-            else if (position == adapter.images.length -1)
+            if (position == adapter.images.length -1)
             {
                 nextBtn.setText("Get Started");
                 skipBtn.setVisibility(View.GONE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    nextBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.darkgreen)));
+                    nextBtn.setTextColor(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+                }
+            }
+            else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    nextBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightgrey)));
+                    nextBtn.setTextColor(ColorStateList.valueOf(getResources().getColor(R.color.darkgreen)));
+                }
             }
         }
 
