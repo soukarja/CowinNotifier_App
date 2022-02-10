@@ -155,9 +155,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:fontFamily="@font/poppins_medium"
                             android:gravity="center"
                             android:text="@string/search_district"
-                            android:fontFamily="@font/poppins_medium"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
 
@@ -185,9 +185,9 @@
                                 android:id="@+id/pinBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_medium"
                                 android:hint="@string/enter_pincode"
                                 android:inputType="number"
-                                android:fontFamily="@font/poppins_medium"
                                 android:maxLength="6"
                                 android:outlineSpotShadowColor="@color/green"
                                 android:shadowColor="@color/green"
@@ -202,8 +202,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:fontFamily="@font/poppins_medium"
                             android:backgroundTint="@color/darkgreen"
+                            android:fontFamily="@font/poppins_medium"
                             android:text="@string/searchBtnTxt" />
 
 
@@ -248,8 +248,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="@string/choose_district"
                                 android:fontFamily="@font/poppins_medium"
+                                android:hint="@string/choose_district"
                                 android:inputType="none"
                                 android:text="@string/choose_district" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -259,8 +259,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:fontFamily="@font/poppins_medium"
                             android:backgroundTint="@color/darkgreen"
+                            android:fontFamily="@font/poppins_medium"
                             android:text="@string/searchBtnTxt" />
 
                     </LinearLayout>
@@ -278,10 +278,10 @@
                         android:layout_height="match_parent"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/poppins_medium"
                         android:backgroundTint="@color/primary3"
                         android:drawableLeft="@drawable/notification_off_icon"
                         android:drawableTint="@color/white"
+                        android:fontFamily="@font/poppins_medium"
                         android:text="NOTIFICATION Off"
                         android:textSize="12sp" />
 
@@ -290,11 +290,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="2dp"
-                        android:fontFamily="@font/poppins_medium"
                         android:layout_weight="1"
                         android:backgroundTint="@color/purple_700"
                         android:drawableLeft="@drawable/open_outside_icon"
                         android:drawableTint="@color/white"
+                        android:fontFamily="@font/poppins_medium"
                         android:text="Schedule Now"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -316,8 +316,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Select Age Group"
                         android:fontFamily="@font/poppins_medium"
+                        android:text="Select Age Group"
                         android:textColor="@color/darkgreen"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -335,10 +335,10 @@
                             android:layout_margin="5dp"
                             android:background="@drawable/roundedbutton"
                             android:backgroundTint="@color/lightgrey"
+                            android:fontFamily="@font/poppins_medium"
                             android:gravity="center"
                             android:minWidth="100dp"
                             android:paddingLeft="10dp"
-                            android:fontFamily="@font/poppins_medium"
                             android:paddingTop="5dp"
                             android:paddingRight="10dp"
                             android:paddingBottom="5dp"
@@ -353,9 +353,9 @@
                             android:layout_margin="5dp"
                             android:background="@drawable/roundedbutton"
                             android:backgroundTint="@color/lightgrey"
+                            android:fontFamily="@font/poppins_medium"
                             android:gravity="center"
                             android:minWidth="100dp"
-                            android:fontFamily="@font/poppins_medium"
                             android:paddingLeft="10dp"
                             android:paddingTop="5dp"
                             android:paddingRight="10dp"
@@ -389,6 +389,7 @@
                             android:layout_margin="5dp"
                             android:background="@drawable/roundedbutton"
                             android:backgroundTint="@color/lightgrey"
+                            android:fontFamily="@font/poppins_medium"
                             android:gravity="center"
                             android:minWidth="50dp"
                             android:paddingLeft="10dp"
@@ -396,7 +397,6 @@
                             android:paddingRight="10dp"
                             android:paddingBottom="5dp"
                             android:text="Covishield"
-                            android:fontFamily="@font/poppins_medium"
                             android:textAllCaps="true"
                             android:textColor="@color/black" />
 
@@ -407,6 +407,7 @@
                             android:layout_margin="5dp"
                             android:background="@drawable/roundedbutton"
                             android:backgroundTint="@color/lightgrey"
+                            android:fontFamily="@font/poppins_medium"
                             android:gravity="center"
                             android:minWidth="50dp"
                             android:paddingLeft="10dp"
@@ -414,7 +415,6 @@
                             android:paddingRight="10dp"
                             android:paddingBottom="5dp"
                             android:text="Covaxin"
-                            android:fontFamily="@font/poppins_medium"
                             android:textAllCaps="true"
                             android:textColor="@color/black" />
 
@@ -425,10 +425,10 @@
                             android:layout_margin="5dp"
                             android:background="@drawable/roundedbutton"
                             android:backgroundTint="@color/lightgrey"
+                            android:fontFamily="@font/poppins_medium"
                             android:gravity="center"
                             android:minWidth="50dp"
                             android:paddingLeft="10dp"
-                            android:fontFamily="@font/poppins_medium"
                             android:paddingTop="5dp"
                             android:paddingRight="10dp"
                             android:paddingBottom="5dp"
@@ -462,11 +462,11 @@
                             android:layout_margin="5dp"
                             android:background="@drawable/roundedbutton"
                             android:backgroundTint="@color/lightgrey"
+                            android:fontFamily="@font/poppins_medium"
                             android:gravity="center"
                             android:minWidth="100dp"
                             android:paddingLeft="10dp"
                             android:paddingTop="5dp"
-                            android:fontFamily="@font/poppins_medium"
                             android:paddingRight="10dp"
                             android:paddingBottom="5dp"
                             android:text="Free"
@@ -478,9 +478,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_margin="5dp"
-                            android:fontFamily="@font/poppins_medium"
                             android:background="@drawable/roundedbutton"
                             android:backgroundTint="@color/lightgrey"
+                            android:fontFamily="@font/poppins_medium"
                             android:gravity="center"
                             android:minWidth="100dp"
                             android:paddingLeft="10dp"
@@ -498,32 +498,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="Choose Dates"
-                        android:textColor="@color/darkgreen"
-                        android:textSize="16sp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentLeft="true"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="Choose Dates"
+                            android:textColor="@color/darkgreen"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="Swipe for more dates >>"
-                        android:textColor="@color/darkgreen"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:fontFamily="@font/poppins_light"
-                        android:textSize="10sp"
-                        android:textStyle="italic" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/poppins_light"
+                            android:text="Swipe for more dates >>"
+                            android:textColor="@color/darkgreen"
+                            android:textSize="10sp"
+                            android:textStyle="italic" />
 
                     </RelativeLayout>
 
@@ -541,10 +541,10 @@
                                 android:id="@+id/date0"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:fontFamily="@font/poppins_medium"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/roundedbutton"
                                 android:backgroundTint="@color/lightgrey"
+                                android:fontFamily="@font/poppins_medium"
                                 android:gravity="center"
                                 android:minWidth="100dp"
                                 android:paddingLeft="10dp"
@@ -559,10 +559,10 @@
                                 android:id="@+id/date1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:fontFamily="@font/poppins_medium"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/roundedbutton"
                                 android:backgroundTint="@color/lightgrey"
+                                android:fontFamily="@font/poppins_medium"
                                 android:gravity="center"
                                 android:minWidth="100dp"
                                 android:paddingLeft="10dp"
@@ -580,6 +580,7 @@
                                 android:layout_margin="5dp"
                                 android:background="@drawable/roundedbutton"
                                 android:backgroundTint="@color/lightgrey"
+                                android:fontFamily="@font/poppins_medium"
                                 android:gravity="center"
                                 android:minWidth="100dp"
                                 android:paddingLeft="10dp"
@@ -588,7 +589,6 @@
                                 android:paddingBottom="5dp"
                                 android:text="Tomorrow"
                                 android:textAllCaps="true"
-                                android:fontFamily="@font/poppins_medium"
                                 android:textColor="@color/black" />
 
 
@@ -599,12 +599,12 @@
                                 android:layout_margin="5dp"
                                 android:background="@drawable/roundedbutton"
                                 android:backgroundTint="@color/lightgrey"
+                                android:fontFamily="@font/poppins_medium"
                                 android:gravity="center"
                                 android:minWidth="100dp"
                                 android:paddingLeft="10dp"
                                 android:paddingTop="5dp"
                                 android:paddingRight="10dp"
-                                android:fontFamily="@font/poppins_medium"
                                 android:paddingBottom="5dp"
                                 android:text="Date"
                                 android:textAllCaps="true"
@@ -617,6 +617,7 @@
                                 android:layout_margin="5dp"
                                 android:background="@drawable/roundedbutton"
                                 android:backgroundTint="@color/lightgrey"
+                                android:fontFamily="@font/poppins_medium"
                                 android:gravity="center"
                                 android:minWidth="100dp"
                                 android:paddingLeft="10dp"
@@ -624,7 +625,6 @@
                                 android:paddingRight="10dp"
                                 android:paddingBottom="5dp"
                                 android:text="Date"
-                                android:fontFamily="@font/poppins_medium"
                                 android:textAllCaps="true"
                                 android:textColor="@color/black" />
 
@@ -635,6 +635,7 @@
                                 android:layout_margin="5dp"
                                 android:background="@drawable/roundedbutton"
                                 android:backgroundTint="@color/lightgrey"
+                                android:fontFamily="@font/poppins_medium"
                                 android:gravity="center"
                                 android:minWidth="100dp"
                                 android:paddingLeft="10dp"
@@ -642,7 +643,6 @@
                                 android:paddingRight="10dp"
                                 android:paddingBottom="5dp"
                                 android:text="Date"
-                                android:fontFamily="@font/poppins_medium"
                                 android:textAllCaps="true"
                                 android:textColor="@color/black" />
 
@@ -653,11 +653,11 @@
                                 android:layout_margin="5dp"
                                 android:background="@drawable/roundedbutton"
                                 android:backgroundTint="@color/lightgrey"
+                                android:fontFamily="@font/poppins_medium"
                                 android:gravity="center"
                                 android:minWidth="100dp"
                                 android:paddingLeft="10dp"
                                 android:paddingTop="5dp"
-                                android:fontFamily="@font/poppins_medium"
                                 android:paddingRight="10dp"
                                 android:paddingBottom="5dp"
                                 android:text="Date"
@@ -672,6 +672,7 @@
                                 android:layout_margin="5dp"
                                 android:background="@drawable/roundedbutton"
                                 android:backgroundTint="@color/lightgrey"
+                                android:fontFamily="@font/poppins_medium"
                                 android:gravity="center"
                                 android:minWidth="100dp"
                                 android:paddingLeft="10dp"
@@ -680,7 +681,6 @@
                                 android:paddingBottom="5dp"
                                 android:text="Date"
                                 android:textAllCaps="true"
-                                android:fontFamily="@font/poppins_medium"
                                 android:textColor="@color/black" />
 
 
@@ -784,8 +784,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Dose 1"
                             android:fontFamily="@font/poppins_medium"
+                            android:text="Dose 1"
                             android:textAllCaps="true"
                             android:textStyle="bold" />
 
@@ -795,26 +795,26 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Dose 2"
                             android:fontFamily="@font/poppins_medium"
+                            android:text="Dose 2"
                             android:textAllCaps="true"
                             android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/noOfCenters"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/poppins_medium"
                         android:text="0 Centers Found"
                         android:textColor="@color/blue"
-                        android:id="@+id/noOfCenters"
                         android:textSize="16sp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentLeft="true"
-                        android:fontFamily="@font/poppins_medium"
                         android:textStyle="italic" />
 
                     <com.airbnb.lottie.LottieAnimationView
@@ -857,11 +857,11 @@
                         android:id="@+id/animTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
                         android:gravity="center"
                         android:text="No Internet Connection"
                         android:textAlignment="center"
                         android:textColor="@color/darkgreen"
-                        android:fontFamily="@font/poppins_medium"
                         android:textSize="30sp"
                         android:textStyle="bold" />
 
@@ -870,9 +870,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppins_medium"
                         android:gravity="center"
                         android:text="No Internet Connection"
-                        android:fontFamily="@font/poppins_medium"
                         android:textAlignment="center"
                         android:textColor="@color/green"
                         android:textSize="15sp"
@@ -909,7 +909,7 @@
             android:id="@+id/bannerAd3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/bottomNavigationView"
+            android:layout_alignParentBottom="true"
             android:orientation="vertical" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -918,6 +918,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/white"
+            android:visibility="gone"
             app:elevation="20dp"
             app:itemIconTint="@color/darkgreen"
             app:itemTextColor="@color/darkgreen"

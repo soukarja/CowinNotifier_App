@@ -30,8 +30,6 @@ import java.util.ArrayList;
 public class latestUpdatesActivity extends AppCompatActivity {
 
     private  adsManager ads;
-    private com.facebook.ads.AdView faceBookBanner;
-    private com.google.android.gms.ads.AdView googleBanner;
     private LinearLayout bannerBox;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +40,6 @@ public class latestUpdatesActivity extends AppCompatActivity {
         getAllNews();
 
         bannerBox = (LinearLayout) findViewById(R.id.BannerBox);
-        faceBookBanner = ads.createFacebookBanner(ads.FacebookBanner3, bannerBox);
-        googleBanner = ads.createGoogleBanner(ads.GoogleBanner3, bannerBox);
-        ads.showBannerAds(faceBookBanner, googleBanner);
 
 
         ((TextView) findViewById(R.id.backBtn)).setOnClickListener(new View.OnClickListener() {

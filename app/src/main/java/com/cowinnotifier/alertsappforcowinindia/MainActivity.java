@@ -1,21 +1,6 @@
 package com.cowinnotifier.alertsappforcowinindia;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,29 +8,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -53,11 +29,18 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
@@ -66,25 +49,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.AdListener;
-import com.facebook.ads.AdSettings;
-import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
-import com.facebook.ads.AudienceNetworkAds;
-import com.facebook.ads.InterstitialAd;
-import com.facebook.ads.InterstitialAdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.AdapterStatus;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.onesignal.OneSignal;
@@ -92,24 +58,14 @@ import com.onesignal.OneSignal;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -153,15 +109,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private long pressedTime;
     private long adsTime;
     private boolean isPopupShowing = false;
-    private AdView adView, adView2, adView3;
-    //    private String AdviewCode, Adview2Code, Adview3Code, intadCode;
-    private InterstitialAd intad;
 
     private String FBAdviewCode, FBAdview2Code, FBAdview3Code, FBintadCode;
     private String GoogleBanner1AdCode, GoogleBanner2AdCode, GoogleBanner3AdCode, GoogleintadCode;
 
-    private com.google.android.gms.ads.interstitial.InterstitialAd mInterstitialAd;
-    public com.google.android.gms.ads.AdView adViewGoogle1, adViewGoogle2, adViewGoogle3;
     private boolean showFacebookAds = false;
 
     private adsManager ads;
@@ -835,13 +786,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         fab.setVisibility(View.GONE);
                     }
 
-                    if (!sc.canScrollVertically(1) && vaccineInfoList.size() > 0 && vaccineInfoList.size() > currentLoaded)
-                    {
+                    if (!sc.canScrollVertically(1) && vaccineInfoList.size() > 0 && vaccineInfoList.size() > currentLoaded) {
 
-                        currentLoaded = Math.min(vaccineInfoList.size(), currentLoaded+loadPerCall);
+                        currentLoaded = Math.min(vaccineInfoList.size(), currentLoaded + loadPerCall);
                         List<vaccineInfoModel> tempModel = new ArrayList<>();
-                        for (int kj=0; kj<currentLoaded; kj++)
-                        {
+                        for (int kj = 0; kj < currentLoaded; kj++) {
                             tempModel.add(vaccineInfoList.get(kj));
                         }
                         recyclerViewVaccineInfo = findViewById(R.id.availableVaccineCenters);
@@ -1153,7 +1102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void setDay4(){
+    private void setDay4() {
         TextView filterBtn = (TextView) findViewById(R.id.date4);
         if (day4) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1177,7 +1126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void setDay5(){
+    private void setDay5() {
         TextView filterBtn = (TextView) findViewById(R.id.date5);
         if (day5) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1201,7 +1150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void setDay6(){
+    private void setDay6() {
         TextView filterBtn = (TextView) findViewById(R.id.date6);
         if (day6) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1225,7 +1174,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void setDay7(){
+    private void setDay7() {
         TextView filterBtn = (TextView) findViewById(R.id.date7);
         if (day7) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1249,13 +1198,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void setFilterDose1(){
+    private void setFilterDose1() {
         CheckBox doseBtn = (CheckBox) findViewById(R.id.filterDose1Btn);
         doseBtn.setChecked(filterDose1);
 
     }
 
-    private void setFilterDose2(){
+    private void setFilterDose2() {
         CheckBox doseBtn = (CheckBox) findViewById(R.id.filterDose2Btn);
         doseBtn.setChecked(filterDose2);
     }
@@ -1767,11 +1716,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 else
                     tempTxt = String.valueOf(vaccineInfoList.size()) + " Centers Found";
 
-                ((TextView)findViewById(R.id.noOfCenters)).setText(tempTxt);
+                ((TextView) findViewById(R.id.noOfCenters)).setText(tempTxt);
                 currentLoaded = Math.min(vaccineInfoList.size(), loadPerCall);
                 List<vaccineInfoModel> tempModel = new ArrayList<>();
-                for (int kj=0; kj<currentLoaded; kj++)
-                {
+                for (int kj = 0; kj < currentLoaded; kj++) {
                     tempModel.add(vaccineInfoList.get(kj));
                 }
                 recyclerViewVaccineInfo = findViewById(R.id.availableVaccineCenters);
@@ -2042,46 +1990,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void loadBannerAds() {
 
-        if (adsTime + 10000 > System.currentTimeMillis()) {
-            return;
-        }
-        adsTime = System.currentTimeMillis();
-
-        if (adView == null)
-            adView = ads.createFacebookBanner(ads.FacebookBanner1, (LinearLayout) findViewById(R.id.bannerAd1));
-
-        if (adViewGoogle1 == null)
-            adViewGoogle1 = ads.createGoogleBanner(ads.GoogleBanner1, (LinearLayout) findViewById(R.id.bannerAd1));
-
-        if (adView2 == null)
-            adView2 = ads.createFacebookBanner(ads.FacebookBanner2, (LinearLayout) findViewById(R.id.bannerAd2));
-
-        if (adViewGoogle2 == null)
-            adViewGoogle2 = ads.createGoogleBanner(ads.GoogleBanner2, (LinearLayout) findViewById(R.id.bannerAd2));
-
-        if (adView3 == null)
-            adView3 = ads.createFacebookBanner(ads.FacebookBanner3, (LinearLayout) findViewById(R.id.bannerAd3));
-
-        if (adViewGoogle3 == null)
-            adViewGoogle3 = ads.createGoogleBanner(ads.GoogleBanner3, (LinearLayout) findViewById(R.id.bannerAd3));
-
-        ads.showBannerAds(adView, adViewGoogle1);
-//        ads.showBannerAds(adView2, adViewGoogle2);
-//        ads.showBannerAds(adView3, adViewGoogle3);
-//        ads.showFacebookBanner(adView2);
-//        ads.showFacebookBanner(adView3);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ads.showBannerAds(adView2, adViewGoogle2);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ads.showBannerAds(adView3, adViewGoogle3);
-                    }
-                }, 2000);
-            }
-        }, 2000);
     }
 
 

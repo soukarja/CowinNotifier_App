@@ -17,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.facebook.ads.AdView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,12 +27,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import kotlin.reflect.KFunction;
 
 public class activeCasesActivity extends AppCompatActivity {
     private  adsManager ads;
-    private AdView adView, adView2;
-    public com.google.android.gms.ads.AdView adViewGoogle1, adViewGoogle2;
     private long adsTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,31 +77,6 @@ public class activeCasesActivity extends AppCompatActivity {
 
     private void loadBannerAds() {
 
-        if (adsTime + 10000 > System.currentTimeMillis()) {
-            return;
-        }
-        adsTime = System.currentTimeMillis();
-
-        if (adView == null)
-            adView = ads.createFacebookBanner(ads.FacebookBanner1, (LinearLayout) findViewById(R.id.BannerBox1));
-
-        if (adViewGoogle1 == null)
-            adViewGoogle1 = ads.createGoogleBanner(ads.GoogleBanner1, (LinearLayout) findViewById(R.id.BannerBox1));
-
-        if (adView2 == null)
-            adView2 = ads.createFacebookBanner(ads.FacebookBanner2, (LinearLayout) findViewById(R.id.BannerBox2));
-
-        if (adViewGoogle2 == null)
-            adViewGoogle2 = ads.createGoogleBanner(ads.GoogleBanner2, (LinearLayout) findViewById(R.id.BannerBox2));
-
-
-        ads.showBannerAds(adView, adViewGoogle1);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ads.showBannerAds(adView2, adViewGoogle2);
-            }
-        }, 2000);
     }
 
     private void setLastUpdated() {

@@ -14,12 +14,14 @@
         <item
             android:id="@+id/drawerLatestUpdates"
             android:icon="@raw/newspaper"
-            android:title="Latest Updates" />
+            android:title="Latest Updates"
+            android:visible="false" />
 
         <item
             android:id="@+id/rateUsOnPlaystore"
             android:icon="@drawable/star_icon"
-            android:title="Rate App on Playstore" />
+            android:title="Rate App on Playstore"
+            android:visible="false" />
 
         <item
             android:id="@+id/shareBtn"
@@ -29,7 +31,8 @@
         <item
             android:id="@+id/abousUsBtn"
             android:icon="@drawable/info_icon"
-            android:title="About Us" />
+            android:title="About Us"
+            android:visible="false" />
 
         <!--        <item-->
         <!--            android:id="@+id/donateBtn"-->
@@ -38,7 +41,8 @@
         <item
             android:id="@+id/privacyPolicyBtn"
             android:icon="@drawable/privacy_policy_icon"
-            android:title="Privacy Policy" />
+            android:title="Privacy Policy"
+            android:visible="false" />
 
     </group>
 

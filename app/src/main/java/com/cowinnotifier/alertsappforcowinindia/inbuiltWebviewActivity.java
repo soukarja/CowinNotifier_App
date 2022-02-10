@@ -16,8 +16,6 @@ public class inbuiltWebviewActivity extends AppCompatActivity {
     private String siteLink;
 
     private  adsManager ads;
-    private com.facebook.ads.AdView faceBookBanner;
-    private com.google.android.gms.ads.AdView googleBanner;
     private LinearLayout bannerBox;
     private ProgressDialog progressDialog;
 
@@ -33,9 +31,7 @@ public class inbuiltWebviewActivity extends AppCompatActivity {
         ads = new adsManager(inbuiltWebviewActivity.this, false);
 
         bannerBox = (LinearLayout) findViewById(R.id.BannerBox);
-        faceBookBanner = ads.createFacebookBanner(ads.FacebookBanner2, bannerBox);
-        googleBanner = ads.createGoogleBanner(ads.GoogleBanner2, bannerBox);
-        ads.showBannerAds(faceBookBanner, googleBanner);
+
 
         ((TextView)findViewById(R.id.header_title)).setText(header);
         ((TextView) findViewById(R.id.backBtn)).setOnClickListener(new View.OnClickListener() {
